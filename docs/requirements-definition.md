@@ -109,7 +109,7 @@
 
 ## 4. 技術的考慮事項
 ### 4.1 MVP技術スタック
-- **フロントエンド**: React.js
+- **フロントエンド**: Vue.js
 - **バックエンド**: FastAPI（Python）
 - **データベース**: Supabase（PostgreSQL）
 - **認証**: Supabase Auth
