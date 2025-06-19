@@ -1,9 +1,30 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
+import { ref, onMounted } from 'vue'
+import { supabase } from '@/lib/supabaseClient'
+
+
+const users = ref([])
+
+async function getUsers() {
+  const { data } = await supabase.from('users').select()
+  users.value = data
+}
+
+onMounted(() => {
+  getUsers()
+})
+
 </script>
 
 <template>
+  <ul>
+    <li v-for="user in users" :key="user.id">
+      <li> name: {{ user.firstname}} {{ user.lastname }} </li>
+      <li> email: {{ user.email }}</li>
+    </li>
+  </ul>
   <header>
     <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
 
