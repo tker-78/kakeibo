@@ -2,18 +2,30 @@
 
 import { ref } from 'vue';
 import { supabase } from '@/lib/supabaseClient';
+import { useRouter } from 'vue-router';
 
-const email = ref('' )
-const password = ref('' )
+const router = useRouter();
+
+const email = ref('' );
+const password = ref('' );
+
+const emailErrors = ref<string[]>([]);
+const passwordErrors = ref<string[]>([]);
+
+  const login = async () => {
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: email.value,
+        password: password.value,
+      });
+      console.log(data, error)
+    } finally {
+      await router.push('/')
+    }
+  }
 
 
-const test = async () => {
-  const { data, error } = await supabase.auth.signInWithPassword({
-    email: email.value,
-    password: password.value,
-  })
-  console.log(data, error)
-}
+
 
 </script>
 
@@ -44,7 +56,6 @@ const test = async () => {
                 label="パスワード"
                 prepend-icon="mdi-lock"
                 :type='password'
-                :append-icon="showPassword = !showPasword"
                 required
               ></v-text-field>
 
@@ -53,8 +64,7 @@ const test = async () => {
                 color="primary"
                 block
                 large
-                :loading="loading"
-                @click="test"
+                @click="login"
               >
                 ログイン
               </v-btn>

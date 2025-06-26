@@ -3,17 +3,6 @@ import {ref, onMounted, createApp} from 'vue'
 import { supabase } from '@/lib/supabaseClient'
 
 
-
-const test = async () => {
- const { data, error } = await supabase.auth.signInWithPassword({
-  email: 'kktak02@gmail.com',
-  password: 'password'
-})
-  console.log(data, error)
-}
-
-
-onMounted(test)
 </script>
 
 
