@@ -13,13 +13,16 @@ const emailErrors = ref<string[]>([]);
 const passwordErrors = ref<string[]>([]);
 
   const login = async () => {
-    try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email: email.value,
-        password: password.value,
-      });
-      console.log(data, error)
-    } finally {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: email.value,
+      password: password.value,
+    });
+    console.log(data, error)
+    if (error) {
+      // something went wrong
+      passwordErrors.value.push('ログインに失敗しました。もう一度試してください。');
+    } else {
+      // success
       await router.push('/')
     }
   }
