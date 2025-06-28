@@ -33,17 +33,17 @@ export const useAuthStore = defineStore('auth', () => {
   const initialize = async () =>  {
     loading.value = true
     try {
-      const { data: { session }} = await supabase.auth.getSession()
+      const { data: { session: currentSession }} = await supabase.auth.getSession()
 
-      if (session) {
-        user.value = session.user
-        session.value = session
+      if (currentSession) {
+        user.value = currentSession.user
+        session.value = currentSession
       }
 
-      supabase.auth.onAuthStateChange((event, session) => {
-        if (session) {
-          user.value = session.user
-          session.value = session
+      supabase.auth.onAuthStateChange((event, newSession) => {
+        if (newSession) {
+          user.value = newSession.user
+          newSession.value = session
         } else {
           user.value = null
           session.value = null
@@ -53,6 +53,8 @@ export const useAuthStore = defineStore('auth', () => {
       console.error('認証の初期化エラー', error)
     } finally {
       loading.value = false
+      console.log("session", session.value)
+      console.log("isAuthenticated", isAuthenticated.value)
     }
   }
   return {

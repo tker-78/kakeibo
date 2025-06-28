@@ -13,3 +13,18 @@ Piniaは状態監視に使われる機能で、
 3. `App.vue`で、authStoreの初期化処理を追加する(onMountedとして)
 4. 各コンポーネントのメソッドを、authStoreのメソッドに書き換える。(これで状態管理が有効になる)
 5. `router/index.ts`にルートガードを実装する。(beforeEachメソッド内に、ルートガードの定義を記述する。)
+
+
+
+### 3. `App.vue`で、authStoreの初期化処理を追加する(onMountedとして)
+
+- `authStore.initialize()`は非同期処理で待つこと。(async/await)
+
+
+
+### 5. `router/index.ts`にルートガードを実装する。(beforeEachメソッド内に、ルートガードの定義を記述する。)
+
+- beforeEachのフック内で、毎回`authStore.initialize()`を呼び出して認証情報を初期化する必要がある。
+- そうしないと、session情報が取得されず、`session == null`の状態になってしまう。
+- `authStore.initialize()`は非同期処理で待つこと(async/await)。
+

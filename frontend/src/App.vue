@@ -5,7 +5,11 @@ import { useAuthStore } from '@/stores/auth'
 
 const authStore = useAuthStore()
 
-onMounted( () => {
+// onMounted( async () => {
+//   await authStore.initialize()
+// })
+
+onMounted( ()  =>  {
   authStore.initialize()
 })
 

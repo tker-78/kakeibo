@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { supabase } from '@/lib/supabaseClient';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
@@ -25,11 +25,10 @@ const passwordErrors = ref<string[]>([]);
       passwordErrors.value.push('ログインに失敗しました。もう一度試してください。');
     } else {
       // success
+      console.log('isAuthenticated:', authStore.isAuthenticated)
       await router.push('/dashboard')
     }
   }
-
-
 
 
 </script>
