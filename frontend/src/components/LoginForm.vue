@@ -3,8 +3,10 @@
 import { ref } from 'vue';
 import { supabase } from '@/lib/supabaseClient';
 import { useRouter } from 'vue-router';
+import { useAuthStore } from '@/stores/auth';
 
 const router = useRouter();
+const authStore = useAuthStore();
 
 const email = ref('' );
 const password = ref('' );
@@ -13,17 +15,17 @@ const emailErrors = ref<string[]>([]);
 const passwordErrors = ref<string[]>([]);
 
   const login = async () => {
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email: email.value,
-      password: password.value,
-    });
+    const { data, error } = await authStore.login(
+      email.value,
+      password.value,
+    );
     console.log(data, error)
     if (error) {
       // something went wrong
       passwordErrors.value.push('ログインに失敗しました。もう一度試してください。');
     } else {
       // success
-      await router.push('/')
+      await router.push('/dashboard')
     }
   }
 

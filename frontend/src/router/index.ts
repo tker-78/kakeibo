@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
 import HomeView from '../views/HomeView.vue'
 import LoginForm from "@/components/LoginForm.vue";
+import DashboardView from "@/views/DashboardView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -19,7 +21,30 @@ const router = createRouter({
       // component: () => import('../views/AboutView.vue'),
       component: LoginForm,
     },
+    {
+      path: '/dashboard',
+      name: 'dashboard',
+      component: DashboardView,
+      meta: { requiresAuth: true },
+    }
   ],
+})
+
+router.beforeEach((to, from, next) :void => {
+  const authStore = useAuthStore()
+
+  if (to.meta.requiresAuth) {
+    if (!authStore.isAuthenticated) {
+      next('/login')
+    } else {
+      next()
+    }
+  } else if ( to.path === '/login' && authStore.isAuthenticated) {
+    // ログイン済みユーザーがログインページにアクセスした場合
+    next('/dashboard')
+  } else {
+    next()
+  }
 })
 
 export default router
