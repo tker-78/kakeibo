@@ -17,7 +17,7 @@ onMounted( ()  =>  {
 
 
 <template>
-  <v-app id="kakeibo">
+  <v-app>
     <v-navigation-drawer
       class="pt-4"
       color="grey-lighten-3"
@@ -33,9 +33,9 @@ onMounted( ()  =>  {
       ></v-avatar>
     </v-navigation-drawer>
 
-    <v-main>
-        <router-view></router-view>
-    </v-main>
+    <div class="d-inline pa-2">
+      <router-view></router-view>
+    </div>
 
   </v-app>
 </template>
@@ -43,8 +43,4 @@ onMounted( ()  =>  {
 
 <style scoped>
 
-#kakeibo {
-  margin-top: 100px;
-
-}
 </style>

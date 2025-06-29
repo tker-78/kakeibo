@@ -30,6 +30,19 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
+  const logout = async () => {
+    loading.value = true
+    try {
+      await supabase.auth.signOut()
+      user.value = null
+      session.value = null
+    } catch (error) {
+      console.error('ログアウトエラー', error)
+    } finally {
+      loading.value = false
+    }
+  }
+
   const initialize = async () =>  {
     loading.value = true
     try {
@@ -40,13 +53,15 @@ export const useAuthStore = defineStore('auth', () => {
         session.value = currentSession
       }
 
-      supabase.auth.onAuthStateChange((event, newSession) => {
+      supabase.auth.onAuthStateChange((event, newSession: Session | null) => {
         if (newSession) {
           user.value = newSession.user
-          newSession.value = session
+          session.value = newSession
+          // console.log("onAuthStateChange:", newSession)
         } else {
           user.value = null
           session.value = null
+          // console.log("onAuthStateChange:", "sessionがnullになりました。")
         }
       })
     } catch (error) {
@@ -63,6 +78,7 @@ export const useAuthStore = defineStore('auth', () => {
     loading,
     isAuthenticated,
     login,
+    logout,
     initialize,
   }
 })

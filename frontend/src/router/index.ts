@@ -30,13 +30,21 @@ const router = createRouter({
   ],
 })
 
+let isInitialized = false
+
 router.beforeEach(async (to, from, next) => {
   const authStore = useAuthStore()
 
+  if (!isInitialized) {
+    await authStore.initialize()
+    isInitialized = true
+  }
+
   if (to.meta.requiresAuth) {
-    if (!authStore.session && !authStore.loading) {
-      await authStore.initialize()
-    }
+    // ここが原因で、リロード時にloginページに遷移されてしまう
+    // if (!authStore.session && !authStore.loading) {
+    //   await authStore.initialize()
+    // }
     if (!authStore.isAuthenticated) {
       next('/login')
     } else {
