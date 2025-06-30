@@ -23,6 +23,7 @@ const logout = async () => {
       <v-btn
         variant="outlined"
         color="red"
+        class="ma-2"
         @click="logout"
       >logout</v-btn>
     </div>
