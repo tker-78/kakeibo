@@ -4,9 +4,8 @@
 
 <template>
   <v-container>
-    <h1>
-      top page
-    </h1>
+    <h1>Kakeiboへようこそ </h1>
+    <p>Kakeiboはあなたの家計を可視化して、効果的な資産形成方法をアドバイスします。</p>
   </v-container>
 
 </template>

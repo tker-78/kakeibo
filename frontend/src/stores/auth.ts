@@ -30,6 +30,30 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
+  const signup = async (email: string, password: string) => {
+    loading.value = true
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: 'http://localhost:5173/email-confirmation', // to do
+        }
+
+      })
+      if (error) {
+        throw error
+      }
+      user.value = data.user
+      session.value = data.session
+      return { data, error: null}
+    } catch (error)  {
+      return { data: null, error}
+    } finally {
+      loading.value = false
+    }
+  }
+
   const logout = async () => {
     loading.value = true
     try {
@@ -78,6 +102,7 @@ export const useAuthStore = defineStore('auth', () => {
     loading,
     isAuthenticated,
     login,
+    signup,
     logout,
     initialize,
   }

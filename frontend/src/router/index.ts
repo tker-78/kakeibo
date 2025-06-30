@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import HomeView from '../views/HomeView.vue'
 import LoginForm from "@/components/LoginForm.vue";
+import SignupForm from "@/components/SignupForm.vue";
 import DashboardView from "@/views/DashboardView.vue";
 
 const router = createRouter({
@@ -20,6 +21,11 @@ const router = createRouter({
       // which is lazy-loaded when the route is visited.
       // component: () => import('../views/AboutView.vue'),
       component: LoginForm,
+    },
+    {
+      path: '/signup',
+      name: 'signup',
+      component: SignupForm,
     },
     {
       path: '/dashboard',

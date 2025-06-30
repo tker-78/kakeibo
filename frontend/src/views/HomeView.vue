@@ -4,11 +4,21 @@ import TopPage from '@/components/TopPage.vue'
 </script>
 
 <template>
+  <v-app-bar>
+    <v-app-bar-title>Kakeibo</v-app-bar-title>
+  </v-app-bar>
   <v-main>
-    <v-btn id="login_btn">
-      <router-link to="/login">Login</router-link>
-    </v-btn>
-    <TopPage />
+    <v-container>
+      <TopPage />
+      <v-container class="d-flex flex-column w-75">
+        <v-btn id="login_btn">
+          <router-link to="/login">Login and Go to dashboard</router-link>
+        </v-btn>
+        <v-btn id="signup_btn">
+          <router-link to="signup">Signup</router-link>
+        </v-btn>
+      </v-container>
+    </v-container>
   </v-main>
 </template>
 
