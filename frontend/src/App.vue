@@ -15,18 +15,22 @@ const menuItems = ref<MenuItem[]>([])
 menuItems.value = [
   {
     title: 'サマリー',
+    icon: 'mdi-monitor-dashboard',
     to: '/dashboard',
   },
   {
     title: '支出分析',
+    icon: 'mdi-cash-off',
     to: '/expenses',
   },
   {
     title: '収入分析',
+    icon: 'mdi-cash-multiple',
     to: '/incomes',
   },
   {
     title: '予算管理',
+    icon: 'mdi-piggy-bank-outline',
     to: '/budgets',
   }
 ]
@@ -58,7 +62,9 @@ onMounted( ()  =>  {
           :key="item.title"
           :title="item.title"
           :to="item.to"
-        ></v-list-item>
+          :prepend-icon="item.icon"
+        >
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
 
