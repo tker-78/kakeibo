@@ -16,7 +16,7 @@ const logout = async () => {
 }
 
 onMounted(() => {
-  headerStore.setTitle('サマリー')
+  headerStore.setTitle('予算管理')
 })
 
 </script>

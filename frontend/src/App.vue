@@ -1,13 +1,50 @@
 <script setup lang="ts">
-import {ref, onMounted, createApp} from 'vue'
-import { supabase } from '@/lib/supabaseClient'
+import {ref, onMounted } from 'vue'
 import { useAuthStore } from '@/stores/auth'
+import { useHeaderStore } from '@/stores/header.ts'
+
+import { useRouter } from 'vue-router'
 
 const authStore = useAuthStore()
+const headerStore = useHeaderStore()
+const router = useRouter()
 
-// onMounted( async () => {
-//   await authStore.initialize()
-// })
+interface MenuItem {
+  title: string,
+  icon?: string,
+  to: string,
+}
+
+const menuItems = ref<MenuItem[]>([])
+
+menuItems.value = [
+  {
+    title: 'サマリー',
+    icon: 'mdi-monitor-dashboard',
+    to: '/dashboard',
+  },
+  {
+    title: '支出分析',
+    icon: 'mdi-cash-off',
+    to: '/expenses',
+  },
+  {
+    title: '収入分析',
+    icon: 'mdi-cash-multiple',
+    to: '/incomes',
+  },
+  {
+    title: '予算管理',
+    icon: 'mdi-piggy-bank-outline',
+    to: '/budgets',
+  }
+]
+
+const logout = async () => {
+  await authStore.logout()
+  await router.push('/')
+}
+
 
 onMounted( ()  =>  {
   authStore.initialize()
@@ -22,21 +59,41 @@ onMounted( ()  =>  {
       class="pt-4"
       color="grey-lighten-3"
       model-value
-      rail
     >
-      <v-avatar
-        v-for="n in 6"
-        :key="n"
-        :color="`grey-${n === 1 ? 'darken' : 'lighten'}-1`"
-        :size="n === 1 ? 36 : 20"
-        class="d-block text-center mx-auto mb-9"
-      ></v-avatar>
+      <v-list>
+        <v-list-item
+          v-for="item in menuItems"
+          :key="item.title"
+          :title="item.title"
+          :to="item.to"
+          :prepend-icon="item.icon"
+        >
+        </v-list-item>
+      </v-list>
     </v-navigation-drawer>
 
-    <div class="d-inline pa-2">
-      <router-view></router-view>
-    </div>
+    <v-main>
+      <!--header -->
+      <v-app-bar rounded>
+        <template v-slot:prepend>
+          <v-app-bar-nav-icon></v-app-bar-nav-icon>
+        </template>
+        <v-app-bar-title>{{ headerStore.title }}</v-app-bar-title>
+        <div>
+          <v-btn
+            variant="outlined"
+            color="red"
+            @click="logout"
+            class="ma-4"
+          >logout</v-btn>
+        </div>
+      </v-app-bar>
 
+      <v-container>
+        <router-view></router-view>
+      </v-container>
+
+    </v-main>
   </v-app>
 </template>
 

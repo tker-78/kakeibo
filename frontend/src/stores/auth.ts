@@ -67,6 +67,11 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
+  const isLoggedin = async () => {
+    // loginしているかのチェック
+    // todo
+  }
+
   const initialize = async () =>  {
     loading.value = true
     try {

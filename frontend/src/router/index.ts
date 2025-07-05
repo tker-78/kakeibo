@@ -4,6 +4,9 @@ import HomeView from '../views/HomeView.vue'
 import LoginForm from "@/components/LoginForm.vue";
 import SignupForm from "@/components/SignupForm.vue";
 import DashboardView from "@/views/DashboardView.vue";
+import ExpenseView from "@/views/ExpenseView.vue";
+import IncomeView from "@/views/IncomeView.vue";
+import BudgetView from "@/views/BudgetView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -31,6 +34,24 @@ const router = createRouter({
       path: '/dashboard',
       name: 'dashboard',
       component: DashboardView,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/expenses',
+      name: 'expenses',
+      component: ExpenseView,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/incomes',
+      name: 'incomes',
+      component: IncomeView,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/budgets',
+      name: 'budgets',
+      component: BudgetView,
       meta: { requiresAuth: true },
     }
   ],

@@ -7,16 +7,8 @@ import { onMounted } from 'vue';
 const authStore = useAuthStore();
 const headerStore = useHeaderStore();
 
-const router = useRouter();
-
-
-const logout = async () => {
-  await authStore.logout()
-  await router.push('/')
-}
-
 onMounted(() => {
-  headerStore.setTitle('サマリー')
+  headerStore.setTitle('収入分析')
 })
 
 </script>
