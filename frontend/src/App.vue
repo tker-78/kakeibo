@@ -1,8 +1,13 @@
 <script setup lang="ts">
 import {ref, onMounted } from 'vue'
 import { useAuthStore } from '@/stores/auth'
+import { useHeaderStore } from '@/stores/header.ts'
+
+import { useRouter } from 'vue-router'
 
 const authStore = useAuthStore()
+const headerStore = useHeaderStore()
+const router = useRouter()
 
 interface MenuItem {
   title: string,
@@ -35,6 +40,12 @@ menuItems.value = [
   }
 ]
 
+const logout = async () => {
+  await authStore.logout()
+  await router.push('/')
+}
+
+
 onMounted( ()  =>  {
   authStore.initialize()
 })
@@ -49,13 +60,6 @@ onMounted( ()  =>  {
       color="grey-lighten-3"
       model-value
     >
-<!--      <v-avatar-->
-<!--        v-for="n in 6"-->
-<!--        :key="n"-->
-<!--        :color="`grey-${n === 1 ? 'darken' : 'lighten'}-1`"-->
-<!--        :size="n === 1 ? 36 : 20"-->
-<!--        class="d-block text-center mx-auto mb-9"-->
-<!--      ></v-avatar>-->
       <v-list>
         <v-list-item
           v-for="item in menuItems"
@@ -69,9 +73,26 @@ onMounted( ()  =>  {
     </v-navigation-drawer>
 
     <v-main>
-      <div class="d-inline pa-4">
+      <!--header -->
+      <v-app-bar rounded>
+        <template v-slot:prepend>
+          <v-app-bar-nav-icon></v-app-bar-nav-icon>
+        </template>
+        <v-app-bar-title>{{ headerStore.title }}</v-app-bar-title>
+        <div>
+          <v-btn
+            variant="outlined"
+            color="red"
+            @click="logout"
+            class="ma-4"
+          >logout</v-btn>
+        </div>
+      </v-app-bar>
+
+      <v-container>
         <router-view></router-view>
-      </div>
+      </v-container>
+
     </v-main>
   </v-app>
 </template>
