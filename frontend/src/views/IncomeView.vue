@@ -2,6 +2,7 @@
 import { useHeaderStore } from '@/stores/header';
 import { onMounted } from 'vue';
 import RegisterIncome from '@/components/RegisterIncome.vue'
+import IncomeGraph from '@/components/IncomeGraph.vue'
 
 
 
@@ -15,6 +16,7 @@ onMounted(() => {
 
 <template>
   <v-container>
+    <IncomeGraph></IncomeGraph>
     <RegisterIncome></RegisterIncome>
 
   </v-container>
