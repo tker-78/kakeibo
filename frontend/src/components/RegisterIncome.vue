@@ -13,6 +13,17 @@ const categoryOptions = [
   'その他収入',
 ]
 
+interface IncomeItem {
+  id: number,
+  category: string,
+  income_month: string,
+  income_value: number,
+}
+
+const emit = defineEmits<{
+  registered: [item: IncomeItem]
+}>();
+
 const register = async () => {
   // supabaseのincomeテーブルに登録(INSERT)
   const { data, error } = await supabase.from('incomes').insert(
@@ -29,6 +40,7 @@ const register = async () => {
     // success
     console.log('収入の登録に成功しました。')
     console.log('data:', data)
+    emit('registered', data[0])
   }
 }
 
