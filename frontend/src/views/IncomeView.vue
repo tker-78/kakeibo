@@ -18,9 +18,9 @@ interface IncomeItem {
 }
 
 const incomeData = ref<IncomeItem[]>([])
-    // {id: 1, category: '給与収入', income_month: '2021-01', income_value: 10000000 },
-    // {id: 2, category: '給与収入', income_month: '2021-02', income_value: 10000000 },
-    // {id: 3, category: '給与収入', income_month: '2021-03', income_value: 10000000 },
+// {id: 1, category: '給与収入', income_month: '2021-01', income_value: 10000000 },
+// {id: 2, category: '給与収入', income_month: '2021-02', income_value: 10000000 },
+// {id: 3, category: '給与収入', income_month: '2021-03', income_value: 10000000 },
 
 const getIncomeData = async () => {
   const { data, error } = await supabase.from('incomes').select()
@@ -29,7 +29,7 @@ const getIncomeData = async () => {
     console.log('data:', data)
     console.log('収入の取得に失敗しました。もう一度試してください。')
   }
-  console.log('data:', data)
+  // console.log('data:', data)
   if (data === null) {
     incomeData.value = []
   } else {
@@ -38,7 +38,7 @@ const getIncomeData = async () => {
         incomeData.value.push(item)
       }
     }
-    console.log('incomeData:', incomeData.value)
+    // console.log('incomeData:', incomeData.value)
   }
 }
 

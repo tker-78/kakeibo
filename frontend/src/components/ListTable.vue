@@ -12,7 +12,7 @@ const props = defineProps<{
   items: Item[]
 }>()
 
-console.log(props.items)
+// console.log(props.items)
 
 
 </script>
