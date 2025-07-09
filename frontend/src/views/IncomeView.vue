@@ -22,7 +22,7 @@ const incomeData = ref<IncomeItem[]>([])
 // {id: 2, category: '給与収入', income_month: '2021-02', income_value: 10000000 },
 // {id: 3, category: '給与収入', income_month: '2021-03', income_value: 10000000 },
 
-const getIncomeData = async () => {
+const getIncomeListData = async () => {
   const { data, error } = await supabase.from('incomes').select()
   if (error) {
     console.log('error:', error)
@@ -42,32 +42,56 @@ const getIncomeData = async () => {
   }
 }
 
+const getIncomeByCategory = async (month: string) => {
+  const { data, error } = await supabase
+      .from('incomes')
+      .select('*')
+      .eq('income_month', month)
+
+  if (error) {
+    console.log('error:', error)
+    console.log('data:', data)
+    console.log('収入の取得に失敗しました。もう一度試してください。')
+  } else {
+    console.log('data:', data)
+  }
+
+  // todo
+
+}
+
 const handleIncomeRegistered = async (item: IncomeItem) => {
   incomeData.value.push(item)
 }
 
 onMounted(async () => {
   headerStore.setTitle('収入分析')
-  await getIncomeData()
+  await getIncomeListData()
+  await getIncomeByCategory('2025-07-01')
 })
 
 </script>
 
 <template>
   <v-container fluid>
-    <v-row>
-      <v-col cols="12"  sm="12" md="6" lg="12" xl="12">
-        <IncomeGraph></IncomeGraph>
+    <v-row class="d-flex justify-center">
+      <v-col col="12" sm="6" md="6" lg="6" xl="6">
+        <IncomeGraph
+            :labels="['給与収入', '不動産収入', '補助金収入', 'その他収入']"
+            :items="[1000000, 200000, 15000, 0]"></IncomeGraph>
       </v-col>
-      <v-col cols="12" sm="12" md="6" lg="12" xl="12">
+    </v-row>
+    <v-row class="d-flex justify-center">
+      <v-col col="12" sm="10" md="12" lg="6" xl="6">
         <RegisterIncome @registered="handleIncomeRegistered"></RegisterIncome>
       </v-col>
-      <v-col cols="12" sm="12" md="6" lg="12" xl="12">
+    </v-row>
+    <v-row class="d-flex justify-center">
+      <v-col col="12" sm="10" md="12" lg="6" xl="6">
         <ListTable
         :items="incomeData"
         ></ListTable>
       </v-col>
-
     </v-row>
 
   </v-container>

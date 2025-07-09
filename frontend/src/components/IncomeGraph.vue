@@ -5,12 +5,25 @@ import { ref } from 'vue'
 
 ChartJS.register(ArcElement, Tooltip, Legend)
 
-const chartOptions = ref({})
+const props = defineProps<{
+  items: number[],
+  labels: string[]
+}>()
+
+const chartOptions = ref({
+  responsive: true,
+})
+
 const chartData = ref({
-  labels: ['給与収入', '不動産収入', 'その他収入'],
+  labels: props.labels,
   datasets: [
     {
-      data: [10, 20, 30],
+      data: props.items,
+      backgroundColor: [
+        '#ff6384',
+        '#36a2eb',
+        '#ffce56',
+      ],
     }
   ]
 })

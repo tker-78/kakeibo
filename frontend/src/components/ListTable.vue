@@ -18,7 +18,7 @@ const props = defineProps<{
 </script>
 
 <template>
-  <v-table>
+  <v-table class="table-list">
     <thead>
       <tr>
         <th>月</th>
@@ -41,5 +41,8 @@ const props = defineProps<{
 </template>
 
 <style scoped>
+.table-list {
+  margin: 100px 100px;
+}
 
 </style>
