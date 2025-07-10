@@ -42,21 +42,50 @@ const getIncomeListData = async () => {
   }
 }
 
-const getIncomeByCategory = async (month: string) => {
+const incomeByCategory = ref<number[]>([])
+
+const getIncomeByCategory = async (date: string) => {
+  // グラフでの集計は月単位だから、7月を指定した場合は、7/1を使う。
+  // リストから情報を取得する際は、7月1日から31日までのデータを取得する。
+  const year = date.split('-')[0]
+  const month = date.split('-')[1]
+
+  const start_date = `${year}-${month}-01`
+  const end_date = `${year}-${month}-31`
+
+  let sum_salary = 0
+  let sum_realstate = 0
+  let sum_support = 0
+  let sum_other = 0
+
+
   const { data, error } = await supabase
       .from('incomes')
       .select('*')
-      .eq('income_month', month)
+      .gte('income_month', start_date)
+      .lte('income_month', end_date)
+
 
   if (error) {
-    console.log('error:', error)
-    console.log('data:', data)
-    console.log('収入の取得に失敗しました。もう一度試してください。')
+    // todo
   } else {
-    console.log('data:', data)
+    for (const item of data) {
+      if (item.category === '給与収入') {
+        sum_salary += item.income_value
+      } else if (item.category === '不動産収入') {
+        sum_realstate += item.income_value
+      } else if (item.category === '補助金収入') {
+        sum_support += item.income_value
+      } else if (item.category === 'その他収入') {
+        sum_other += item.income_value
+      }
+    }
   }
 
-  // todo
+  console.log('data:', data)
+  incomeByCategory.value = [sum_salary, sum_realstate, sum_support, sum_other]
+  console.log(incomeByCategory.value)
+
 
 }
 
@@ -78,7 +107,7 @@ onMounted(async () => {
       <v-col col="12" sm="6" md="6" lg="6" xl="6">
         <IncomeGraph
             :labels="['給与収入', '不動産収入', '補助金収入', 'その他収入']"
-            :items="[1000000, 200000, 15000, 0]"></IncomeGraph>
+            :items="incomeByCategory"></IncomeGraph>
       </v-col>
     </v-row>
     <v-row class="d-flex justify-center">
