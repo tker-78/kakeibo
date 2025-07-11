@@ -1,13 +1,15 @@
 <script setup lang="ts">
+import { useDateStore } from '@/stores/date';
 import { useHeaderStore } from '@/stores/header';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import RegisterIncome from '@/components/RegisterIncome.vue'
 import IncomeGraph from '@/components/IncomeGraph.vue'
 import ListTable from '@/components/ListTable.vue'
 import { supabase } from '@/lib/supabaseClient';
+import MonthPicker from '@/components/MonthPicker.vue'
 
 
-
+const dateStore = useDateStore();
 const headerStore = useHeaderStore();
 
 interface IncomeItem {
@@ -42,16 +44,52 @@ const getIncomeListData = async () => {
   }
 }
 
+const getIncomeListForThisMonth = async (date: string) => {
+  incomeData.value = []
+  const dateObject = new Date(date)
+  const startObject = new Date(dateObject.getFullYear(), dateObject.getMonth(), 2)
+  const endObject = new Date(dateObject.getFullYear(), dateObject.getMonth()+ 1, 1)
+  const start = startObject.toISOString().split('T')[0]
+  const end = endObject.toISOString().split('T')[0]
+  console.log('start:', start)
+  console.log('end:', end)
+
+
+  // const start = date.split('-')[0] + '-' + dateStore.date.split('-')[1] + '-01'
+  // const end = date.split('-')[0] + '-' + dateStore.date.split('-')[1] + '-31'
+  const { data, error } = await supabase
+    .from('incomes')
+    .select('*')
+    .gte('income_month', start)
+    .lte('income_month', end)
+
+  if (error) {
+    console.log('error:', error)
+    console.log('data:', data)
+    console.log('収入の取得に失敗しました。もう一度試してください。')
+  } else {
+    for (const item of data) {
+      if (item.income_value != null) {
+        incomeData.value.push(item)
+      }
+    }
+  }
+  console.log('incomeData:', incomeData.value)
+}
+
 const incomeByCategory = ref<number[]>([])
 
 const getIncomeByCategory = async (date: string) => {
   // グラフでの集計は月単位だから、7月を指定した場合は、7/1を使う。
   // リストから情報を取得する際は、7月1日から31日までのデータを取得する。
-  const year = date.split('-')[0]
-  const month = date.split('-')[1]
+  const dateObject = new Date(date)
+  const startObject = new Date(dateObject.getFullYear(), dateObject.getMonth(), 2)
+  const endObject = new Date(dateObject.getFullYear(), dateObject.getMonth()+ 1, 1)
+  const start = startObject.toISOString().split('T')[0]
+  const end = endObject.toISOString().split('T')[0]
+  console.log('start:', start)
+  console.log('end:', end)
 
-  const start_date = `${year}-${month}-01`
-  const end_date = `${year}-${month}-31`
 
   let sum_salary = 0
   let sum_realstate = 0
@@ -62,8 +100,8 @@ const getIncomeByCategory = async (date: string) => {
   const { data, error } = await supabase
       .from('incomes')
       .select('*')
-      .gte('income_month', start_date)
-      .lte('income_month', end_date)
+      .gte('income_month', start)
+      .lte('income_month', end)
 
 
   if (error) {
@@ -82,7 +120,7 @@ const getIncomeByCategory = async (date: string) => {
     }
   }
 
-  console.log('data:', data)
+  // console.log('data:', data)
   incomeByCategory.value = [sum_salary, sum_realstate, sum_support, sum_other]
   console.log(incomeByCategory.value)
 
@@ -95,14 +133,25 @@ const handleIncomeRegistered = async (item: IncomeItem) => {
 
 onMounted(async () => {
   headerStore.setTitle('収入分析')
-  await getIncomeListData()
-  await getIncomeByCategory('2025-07-01')
+  await getIncomeListForThisMonth(dateStore.date)
+  await getIncomeByCategory(dateStore.date)
 })
+
+watch(
+  () => dateStore.date,
+  async (newDate: string) => {
+    await getIncomeListForThisMonth(newDate)
+    await getIncomeByCategory(newDate)
+  }
+)
 
 </script>
 
 <template>
   <v-container fluid>
+    <v-row class="d-flex justify-center">
+      <MonthPicker/>
+    </v-row>
     <v-row class="d-flex justify-center">
       <v-col col="12" sm="6" md="6" lg="6" xl="6">
         <IncomeGraph

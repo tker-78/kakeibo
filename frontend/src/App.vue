@@ -2,13 +2,12 @@
 import {ref, onMounted } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 import { useHeaderStore } from '@/stores/header.ts'
-
 import { useRouter } from 'vue-router'
 
 const authStore = useAuthStore()
 const headerStore = useHeaderStore()
 const router = useRouter()
-const drawer = ref(false)
+const drawer = ref(true)
 
 interface MenuItem {
   title: string,
