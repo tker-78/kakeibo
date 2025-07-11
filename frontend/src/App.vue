@@ -2,12 +2,12 @@
 import {ref, onMounted } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 import { useHeaderStore } from '@/stores/header.ts'
-
 import { useRouter } from 'vue-router'
 
 const authStore = useAuthStore()
 const headerStore = useHeaderStore()
 const router = useRouter()
+const drawer = ref(true)
 
 interface MenuItem {
   title: string,
@@ -56,9 +56,10 @@ onMounted( ()  =>  {
 <template>
   <v-app>
     <v-navigation-drawer
+      app
+      v-model="drawer"
       class="pt-4"
       color="grey-lighten-3"
-      model-value
     >
       <v-list>
         <v-list-item
@@ -72,11 +73,10 @@ onMounted( ()  =>  {
       </v-list>
     </v-navigation-drawer>
 
-    <v-main>
       <!--header -->
-      <v-app-bar rounded>
+      <v-app-bar app>
         <template v-slot:prepend>
-          <v-app-bar-nav-icon></v-app-bar-nav-icon>
+          <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
         </template>
         <v-app-bar-title>{{ headerStore.title }}</v-app-bar-title>
         <div>
@@ -88,16 +88,22 @@ onMounted( ()  =>  {
           >logout</v-btn>
         </div>
       </v-app-bar>
-
-      <v-container>
+    <!-- main content -->
+    <v-main app>
+      <v-container fluid >
         <router-view></router-view>
       </v-container>
-
     </v-main>
+
   </v-app>
 </template>
 
 
 <style scoped>
+.v-application {
+  width: 100vw;
+}
+
+
 
 </style>

@@ -34,7 +34,6 @@ const passwordErrors = ref<string[]>([]);
 </script>
 
 <template>
-
   <v-container fluid class="mx-auto" width="600">
     <v-row justify="center" align="center">
       <v-col>

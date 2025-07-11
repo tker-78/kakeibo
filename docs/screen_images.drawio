@@ -178,6 +178,78 @@
                         <mxPoint x="420" y="380" as="offset"/>
                     </mxGeometry>
                 </mxCell>
+                <mxCell id="jNE-40S-sm8R6Gz7hhuE-16" value="" style="shape=table;startSize=0;container=1;collapsible=0;childLayout=tableLayout;" vertex="1" parent="W4mGvQsWZQ79N5c8AETa-2">
+                    <mxGeometry x="170" y="545" width="370" height="115" as="geometry"/>
+                </mxCell>
+                <mxCell id="jNE-40S-sm8R6Gz7hhuE-17" value="" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="jNE-40S-sm8R6Gz7hhuE-16">
+                    <mxGeometry width="370" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="jNE-40S-sm8R6Gz7hhuE-18" value="月" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;" vertex="1" parent="jNE-40S-sm8R6Gz7hhuE-17">
+                    <mxGeometry width="93" height="35" as="geometry">
+                        <mxRectangle width="93" height="35" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="jNE-40S-sm8R6Gz7hhuE-19" value="カテゴリ" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;" vertex="1" parent="jNE-40S-sm8R6Gz7hhuE-17">
+                    <mxGeometry x="93" width="92" height="35" as="geometry">
+                        <mxRectangle width="92" height="35" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="jNE-40S-sm8R6Gz7hhuE-20" value="金額" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;" vertex="1" parent="jNE-40S-sm8R6Gz7hhuE-17">
+                    <mxGeometry x="185" width="93" height="35" as="geometry">
+                        <mxRectangle width="93" height="35" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="jNE-40S-sm8R6Gz7hhuE-21" value="" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;" vertex="1" parent="jNE-40S-sm8R6Gz7hhuE-17">
+                    <mxGeometry x="278" width="92" height="35" as="geometry">
+                        <mxRectangle width="92" height="35" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="jNE-40S-sm8R6Gz7hhuE-22" value="" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="jNE-40S-sm8R6Gz7hhuE-16">
+                    <mxGeometry y="35" width="370" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="jNE-40S-sm8R6Gz7hhuE-23" value="2025年7月25日" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;" vertex="1" parent="jNE-40S-sm8R6Gz7hhuE-22">
+                    <mxGeometry width="93" height="40" as="geometry">
+                        <mxRectangle width="93" height="40" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="jNE-40S-sm8R6Gz7hhuE-24" value="給与収入" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;" vertex="1" parent="jNE-40S-sm8R6Gz7hhuE-22">
+                    <mxGeometry x="93" width="92" height="40" as="geometry">
+                        <mxRectangle width="92" height="40" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="jNE-40S-sm8R6Gz7hhuE-25" value="180000" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;" vertex="1" parent="jNE-40S-sm8R6Gz7hhuE-22">
+                    <mxGeometry x="185" width="93" height="40" as="geometry">
+                        <mxRectangle width="93" height="40" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="jNE-40S-sm8R6Gz7hhuE-26" value="" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;" vertex="1" parent="jNE-40S-sm8R6Gz7hhuE-22">
+                    <mxGeometry x="278" width="92" height="40" as="geometry">
+                        <mxRectangle width="92" height="40" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="jNE-40S-sm8R6Gz7hhuE-27" value="" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="jNE-40S-sm8R6Gz7hhuE-16">
+                    <mxGeometry y="75" width="370" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="jNE-40S-sm8R6Gz7hhuE-28" value="2025年7月27日" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;" vertex="1" parent="jNE-40S-sm8R6Gz7hhuE-27">
+                    <mxGeometry width="93" height="40" as="geometry">
+                        <mxRectangle width="93" height="40" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="jNE-40S-sm8R6Gz7hhuE-29" value="家賃収入" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;" vertex="1" parent="jNE-40S-sm8R6Gz7hhuE-27">
+                    <mxGeometry x="93" width="92" height="40" as="geometry">
+                        <mxRectangle width="92" height="40" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="jNE-40S-sm8R6Gz7hhuE-30" value="150000" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;" vertex="1" parent="jNE-40S-sm8R6Gz7hhuE-27">
+                    <mxGeometry x="185" width="93" height="40" as="geometry">
+                        <mxRectangle width="93" height="40" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="jNE-40S-sm8R6Gz7hhuE-31" value="" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;" vertex="1" parent="jNE-40S-sm8R6Gz7hhuE-27">
+                    <mxGeometry x="278" width="92" height="40" as="geometry">
+                        <mxRectangle width="92" height="40" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
                 <mxCell id="W4mGvQsWZQ79N5c8AETa-20" value="ログイン後にリダイレクトされるページ" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="W4mGvQsWZQ79N5c8AETa-1">
                     <mxGeometry x="50" y="10" width="240" height="30" as="geometry"/>
                 </mxCell>
