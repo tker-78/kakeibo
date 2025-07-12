@@ -21,9 +21,12 @@ const chartData = computed(() => {
         {
           data: props.items,
           backgroundColor: [
-            '#ff6384',
-            '#36a2eb',
-            '#ffce56',
+            '#ff6384', // pink
+            '#36a2eb', // blue
+            '#ffce56', // yellow
+            '#00b894', // green
+            '#e74c3c', // red
+            '#9b59b6', // purple
           ],
         },
       ]

@@ -3,7 +3,7 @@ import { useDateStore } from '@/stores/date';
 import { useHeaderStore } from '@/stores/header';
 import { onMounted, ref, watch } from 'vue';
 import RegisterIncomeExpense from '@/components/RegisterIncomeExpense.vue'
-import IncomeGraph from '@/components/IncomeGraph.vue'
+import PieChart from '@/components/PieChart.vue'
 import ListTable from '@/components/ListTable.vue'
 import { supabase } from '@/lib/supabaseClient';
 import MonthPicker from '@/components/MonthPicker.vue'
@@ -134,7 +134,7 @@ const getIncomeByCategory = async (date: string) => {
 
 }
 
-const handleIncomeRegistered = async (item: IncomeItem) => {
+const handleIncomeRegistered = async (item: Item) => {
   incomeData.value.push(item)
 }
 
@@ -161,9 +161,9 @@ watch(
     </v-row>
     <v-row class="d-flex justify-center">
       <v-col col="12" sm="6" md="6" lg="6" xl="6">
-        <IncomeGraph
+        <PieChart
             :labels="['給与収入', '不動産収入', '補助金収入', 'その他収入']"
-            :items="incomeByCategory"></IncomeGraph>
+            :items="incomeByCategory"></PieChart>
       </v-col>
     </v-row>
     <v-row class="d-flex justify-center">

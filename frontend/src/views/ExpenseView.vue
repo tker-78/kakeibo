@@ -5,7 +5,7 @@ import { onMounted, ref, watch } from 'vue';
 import { supabase } from '@/lib/supabaseClient';
 import ExpenseGraph from '@/components/ExpenseGraph.vue'
 import MonthPicker from '@/components/MonthPicker.vue'
-import IncomeGraph from '@/components/IncomeGraph.vue'
+import PieChart from '@/components/PieChart.vue'
 import ListTable from '@/components/ListTable.vue'
 import RegisterIncomeExpense from '@/components/RegisterIncomeExpense.vue'
 
@@ -53,6 +53,10 @@ const getExpenseDataForThisMonth = async (date: string) => {
   console.log('expenseData:', expenseData.value)
 }
 
+const handleExpenseRegistered = async (item: Item) => {
+  expenseData.value.push(item)
+}
+
 onMounted(() => {
   headerStore.setTitle('支出分析')
   getExpenseDataForThisMonth(dateStore.date)
@@ -74,16 +78,16 @@ watch(
     </v-row>
     <v-row class="d-flex justify-center">
       <v-col col="12" sm="6" md="6" lg="6" xl="6">
-        <IncomeGraph
-          :labels="['給与収入', '不動産収入', '補助金収入', 'その他収入']"
-          :items="[]"></IncomeGraph>
+        <PieChart
+          :labels="['食費', '交通費', '住宅費', '医療費', '教育費', 'その他費用' ]"
+          :items="[100, 200, 300, 400, 500, 600]"></PieChart>
       </v-col>
     </v-row>
     <v-row class="d-flex justify-center">
       <v-col col="12" sm="10" md="12" lg="6" xl="6">
         <RegisterIncomeExpense
           type="expense"
-          @registered="handleIncomeRegistered"
+          @registered="handleExpenseRegistered"
         ></RegisterIncomeExpense>
       </v-col>
     </v-row>
