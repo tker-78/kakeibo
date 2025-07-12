@@ -1,15 +1,14 @@
 <script setup lang="ts">
 import { defineProps, ref, computed } from 'vue'
 
-interface Item {
-  id: number,
-  category: string,
-  income_month: string,
-  income_value: number,
+interface Column {
+  label: string,
+  key: string,
 }
 
 const props = defineProps<{
-  items: Item[]
+  columns: Column[],
+  items: Record<string, any>[],
 }>()
 
 // console.log(props.items)
@@ -21,20 +20,13 @@ const props = defineProps<{
   <v-table class="table-list">
     <thead>
       <tr>
-        <th>月</th>
-        <th>カテゴリ</th>
-        <th>金額</th>
+        <th v-for="col in columns" :key="col.key">{{ col.label }}</th>
       </tr>
     </thead>
     <tbody>
-    <tr
-      v-for="item in items"
-      :key="item.id"
-    >
-      <td>{{ item.income_month }}</td>
-      <td>{{ item.category }}</td>
-      <td>{{ item.income_value }}</td>
-    </tr>
+      <tr v-for="item in items" :key="item.id">
+        <td v-for="col in columns" :key="col.key">{{ item[col.key]}}</td>
+      </tr>
     </tbody>
   </v-table>
 

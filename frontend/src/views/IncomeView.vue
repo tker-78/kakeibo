@@ -2,7 +2,7 @@
 import { useDateStore } from '@/stores/date';
 import { useHeaderStore } from '@/stores/header';
 import { onMounted, ref, watch } from 'vue';
-import RegisterIncome from '@/components/RegisterIncome.vue'
+import RegisterIncomeExpense from '@/components/RegisterIncomeExpense.vue'
 import IncomeGraph from '@/components/IncomeGraph.vue'
 import ListTable from '@/components/ListTable.vue'
 import { supabase } from '@/lib/supabaseClient';
@@ -12,14 +12,21 @@ import MonthPicker from '@/components/MonthPicker.vue'
 const dateStore = useDateStore();
 const headerStore = useHeaderStore();
 
-interface IncomeItem {
+// interface IncomeItem {
+//   id: number,
+//   category: string,
+//   income_month: string,
+//   income_value: number,
+// }
+
+interface Item {
   id: number,
   category: string,
-  income_month: string,
-  income_value: number,
+  month: string,
+  value: number,
 }
 
-const incomeData = ref<IncomeItem[]>([])
+const incomeData = ref<Item[]>([])
 // {id: 1, category: '給与収入', income_month: '2021-01', income_value: 10000000 },
 // {id: 2, category: '給与収入', income_month: '2021-02', income_value: 10000000 },
 // {id: 3, category: '給与収入', income_month: '2021-03', income_value: 10000000 },
@@ -161,12 +168,20 @@ watch(
     </v-row>
     <v-row class="d-flex justify-center">
       <v-col col="12" sm="10" md="12" lg="6" xl="6">
-        <RegisterIncome @registered="handleIncomeRegistered"></RegisterIncome>
+        <RegisterIncomeExpense
+          type="income"
+          @registered="handleIncomeRegistered"
+        ></RegisterIncomeExpense>
       </v-col>
     </v-row>
     <v-row class="d-flex justify-center">
       <v-col col="12" sm="10" md="12" lg="6" xl="6">
         <ListTable
+          :columns="[
+            { label: '月', key: 'income_month'},
+            { label: 'カテゴリ', key: 'category'},
+            { label: '金額', key: 'income_value'},
+          ]"
         :items="incomeData"
         ></ListTable>
       </v-col>
