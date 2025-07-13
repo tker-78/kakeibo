@@ -2,27 +2,21 @@
 import { useDateStore } from '@/stores/date';
 import { useHeaderStore } from '@/stores/header';
 import { onMounted, ref, watch } from 'vue';
-import RegisterIncome from '@/components/RegisterIncome.vue'
-import IncomeGraph from '@/components/IncomeGraph.vue'
+import RegisterIncomeExpense from '@/components/RegisterIncomeExpense.vue'
+import PieChart from '@/components/PieChart.vue'
 import ListTable from '@/components/ListTable.vue'
 import { supabase } from '@/lib/supabaseClient';
 import MonthPicker from '@/components/MonthPicker.vue'
+import { lists } from '@/constants/lists'
+import type { Item } from '@/types/item'
 
 
 const dateStore = useDateStore();
 const headerStore = useHeaderStore();
 
-interface IncomeItem {
-  id: number,
-  category: string,
-  income_month: string,
-  income_value: number,
-}
+const incomeData = ref<Item[]>([])
+const incomeByCategory = ref<number[]>([])
 
-const incomeData = ref<IncomeItem[]>([])
-// {id: 1, category: '給与収入', income_month: '2021-01', income_value: 10000000 },
-// {id: 2, category: '給与収入', income_month: '2021-02', income_value: 10000000 },
-// {id: 3, category: '給与収入', income_month: '2021-03', income_value: 10000000 },
 
 const getIncomeListData = async () => {
   const { data, error } = await supabase.from('incomes').select()
@@ -77,7 +71,6 @@ const getIncomeListForThisMonth = async (date: string) => {
   console.log('incomeData:', incomeData.value)
 }
 
-const incomeByCategory = ref<number[]>([])
 
 const getIncomeByCategory = async (date: string) => {
   // グラフでの集計は月単位だから、7月を指定した場合は、7/1を使う。
@@ -127,8 +120,10 @@ const getIncomeByCategory = async (date: string) => {
 
 }
 
-const handleIncomeRegistered = async (item: IncomeItem) => {
+const handleIncomeRegistered = async (item: Item) => {
   incomeData.value.push(item)
+  await getIncomeByCategory(dateStore.date)
+
 }
 
 onMounted(async () => {
@@ -154,19 +149,27 @@ watch(
     </v-row>
     <v-row class="d-flex justify-center">
       <v-col col="12" sm="6" md="6" lg="6" xl="6">
-        <IncomeGraph
-            :labels="['給与収入', '不動産収入', '補助金収入', 'その他収入']"
-            :items="incomeByCategory"></IncomeGraph>
+        <PieChart
+            :labels="lists.income_labels"
+            :items="incomeByCategory"></PieChart>
       </v-col>
     </v-row>
     <v-row class="d-flex justify-center">
       <v-col col="12" sm="10" md="12" lg="6" xl="6">
-        <RegisterIncome @registered="handleIncomeRegistered"></RegisterIncome>
+        <RegisterIncomeExpense
+          type="income"
+          @registered="handleIncomeRegistered"
+        ></RegisterIncomeExpense>
       </v-col>
     </v-row>
     <v-row class="d-flex justify-center">
       <v-col col="12" sm="10" md="12" lg="6" xl="6">
         <ListTable
+          :columns="[
+            { label: '月', key: 'income_month'},
+            { label: 'カテゴリ', key: 'category'},
+            { label: '金額', key: 'income_value'},
+          ]"
         :items="incomeData"
         ></ListTable>
       </v-col>
