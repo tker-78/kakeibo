@@ -12,6 +12,8 @@ import RegisterIncomeExpense from '@/components/RegisterIncomeExpense.vue'
 
 const dateStore = useDateStore();
 const headerStore = useHeaderStore();
+const expenseData = ref<Item[]>([])
+const expenseByCategory = ref<number[]>([])
 
 interface Item {
   id: number,
@@ -20,7 +22,6 @@ interface Item {
   value: number,
 }
 
-const expenseData = ref<Item[]>([])
 
 const getExpenseDataForThisMonth = async (date: string) => {
   expenseData.value = []
@@ -53,19 +54,69 @@ const getExpenseDataForThisMonth = async (date: string) => {
   console.log('expenseData:', expenseData.value)
 }
 
+const getExpenseByCategory = async (date: string) => {
+  const dateObject = new Date(date)
+  const startObject = new Date(dateObject.getFullYear(), dateObject.getMonth(), 2)
+  const endObject = new Date(dateObject.getFullYear(), dateObject.getMonth() + 1, 1)
+  const start = startObject.toISOString().split('T')[0]
+  const end = endObject.toISOString().split('T')[0]
+
+  let sum_food = 0
+  let sum_transprot = 0
+  let sum_house = 0
+  let sum_medical = 0
+  let sum_education = 0
+  let sum_investment = 0
+  let sum_other = 0
+
+  const { data, error } = await supabase
+    .from('expenses')
+    .select('*')
+    .gte('expense_month', start)
+    .lte('expense_month', end)
+
+  if (error) {
+    console.log('error:', error)
+  } else {
+    for (const item of data) {
+      if (item.category === '食費') {
+        sum_food += item.expense_value
+      } else if (item.category === '交通費') {
+        sum_transprot += item.expense_value
+      } else if (item.category === '住宅費') {
+        sum_house += item.expense_value
+      } else if (item.category === '医療費') {
+        sum_medical += item.expense_value
+      } else if (item.category === '教育費') {
+        sum_education += item.expense_value
+      } else if (item.category === '投資') {
+        sum_investment += item.expense_value
+      } else if (item.category === 'その他費用') {
+        sum_other += item.expense_value
+      }
+    }
+  }
+
+  expenseByCategory.value = [sum_food, sum_transprot, sum_house, sum_medical, sum_education, sum_investment, sum_other]
+  console.log(expenseByCategory.value)
+}
+
 const handleExpenseRegistered = async (item: Item) => {
   expenseData.value.push(item)
+  await getExpenseByCategory(dateStore.date)
 }
 
 onMounted(() => {
   headerStore.setTitle('支出分析')
   getExpenseDataForThisMonth(dateStore.date)
+  getExpenseByCategory(dateStore.date)
 })
 
 watch(
   () => dateStore.date,
   async (newDate: string) => {
     await getExpenseDataForThisMonth(newDate)
+    await getExpenseByCategory(newDate)
   }
 )
 
@@ -79,8 +130,8 @@ watch(
     <v-row class="d-flex justify-center">
       <v-col col="12" sm="6" md="6" lg="6" xl="6">
         <PieChart
-          :labels="['食費', '交通費', '住宅費', '医療費', '教育費', 'その他費用' ]"
-          :items="[100, 200, 300, 400, 500, 600]"></PieChart>
+          :labels="['食費', '交通費', '住宅費', '医療費', '教育費', '投資', 'その他費用' ]"
+          :items="expenseByCategory"></PieChart>
       </v-col>
     </v-row>
     <v-row class="d-flex justify-center">

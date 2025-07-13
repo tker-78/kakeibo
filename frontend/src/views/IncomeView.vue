@@ -12,12 +12,8 @@ import MonthPicker from '@/components/MonthPicker.vue'
 const dateStore = useDateStore();
 const headerStore = useHeaderStore();
 
-// interface IncomeItem {
-//   id: number,
-//   category: string,
-//   income_month: string,
-//   income_value: number,
-// }
+const incomeData = ref<Item[]>([])
+const incomeByCategory = ref<number[]>([])
 
 interface Item {
   id: number,
@@ -25,11 +21,6 @@ interface Item {
   month: string,
   value: number,
 }
-
-const incomeData = ref<Item[]>([])
-// {id: 1, category: '給与収入', income_month: '2021-01', income_value: 10000000 },
-// {id: 2, category: '給与収入', income_month: '2021-02', income_value: 10000000 },
-// {id: 3, category: '給与収入', income_month: '2021-03', income_value: 10000000 },
 
 const getIncomeListData = async () => {
   const { data, error } = await supabase.from('incomes').select()
@@ -84,7 +75,6 @@ const getIncomeListForThisMonth = async (date: string) => {
   console.log('incomeData:', incomeData.value)
 }
 
-const incomeByCategory = ref<number[]>([])
 
 const getIncomeByCategory = async (date: string) => {
   // グラフでの集計は月単位だから、7月を指定した場合は、7/1を使う。
@@ -136,6 +126,8 @@ const getIncomeByCategory = async (date: string) => {
 
 const handleIncomeRegistered = async (item: Item) => {
   incomeData.value.push(item)
+  await getIncomeByCategory(dateStore.date)
+
 }
 
 onMounted(async () => {

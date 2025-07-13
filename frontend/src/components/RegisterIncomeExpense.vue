@@ -16,7 +16,7 @@ const categoryOptions = computed(() => {
     return [ '給与収入', '不動産収入', '補助金収入', 'その他収入', ]
   }
   if (props.type === 'expense') {
-    return [ '食費', '交通費', '住宅費', '医療費', '教育費', 'その他費', ]
+    return [ '食費', '交通費', '住宅費', '医療費', '教育費', '投資', 'その他費', ]
   }
   return []
 })
