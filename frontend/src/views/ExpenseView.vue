@@ -3,24 +3,18 @@ import { useHeaderStore } from '@/stores/header';
 import { useDateStore } from '@/stores/date';
 import { onMounted, ref, watch } from 'vue';
 import { supabase } from '@/lib/supabaseClient';
-import ExpenseGraph from '@/components/ExpenseGraph.vue'
 import MonthPicker from '@/components/MonthPicker.vue'
 import PieChart from '@/components/PieChart.vue'
 import ListTable from '@/components/ListTable.vue'
 import RegisterIncomeExpense from '@/components/RegisterIncomeExpense.vue'
+import { lists } from '@/constants/lists'
+import type { Item } from '@/types/item'
 
 
 const dateStore = useDateStore();
 const headerStore = useHeaderStore();
 const expenseData = ref<Item[]>([])
 const expenseByCategory = ref<number[]>([])
-
-interface Item {
-  id: number,
-  category: string,
-  month: string,
-  value: number,
-}
 
 
 const getExpenseDataForThisMonth = async (date: string) => {
@@ -130,7 +124,7 @@ watch(
     <v-row class="d-flex justify-center">
       <v-col col="12" sm="6" md="6" lg="6" xl="6">
         <PieChart
-          :labels="['食費', '交通費', '住宅費', '医療費', '教育費', '投資', 'その他費用' ]"
+          :labels="lists.expense_labels"
           :items="expenseByCategory"></PieChart>
       </v-col>
     </v-row>

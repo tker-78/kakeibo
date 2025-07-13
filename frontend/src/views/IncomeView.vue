@@ -7,6 +7,8 @@ import PieChart from '@/components/PieChart.vue'
 import ListTable from '@/components/ListTable.vue'
 import { supabase } from '@/lib/supabaseClient';
 import MonthPicker from '@/components/MonthPicker.vue'
+import { lists } from '@/constants/lists'
+import type { Item } from '@/types/item'
 
 
 const dateStore = useDateStore();
@@ -15,12 +17,6 @@ const headerStore = useHeaderStore();
 const incomeData = ref<Item[]>([])
 const incomeByCategory = ref<number[]>([])
 
-interface Item {
-  id: number,
-  category: string,
-  month: string,
-  value: number,
-}
 
 const getIncomeListData = async () => {
   const { data, error } = await supabase.from('incomes').select()
@@ -154,7 +150,7 @@ watch(
     <v-row class="d-flex justify-center">
       <v-col col="12" sm="6" md="6" lg="6" xl="6">
         <PieChart
-            :labels="['給与収入', '不動産収入', '補助金収入', 'その他収入']"
+            :labels="lists.income_labels"
             :items="incomeByCategory"></PieChart>
       </v-col>
     </v-row>

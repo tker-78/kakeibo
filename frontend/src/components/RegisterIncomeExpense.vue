@@ -2,6 +2,7 @@
 
 import { defineProps, ref, computed } from 'vue';
 import { supabase } from '@/lib/supabaseClient';
+import type { Item } from '@/types/item'
 
 const props = defineProps<{
   type: 'income' | 'expense',
@@ -22,16 +23,8 @@ const categoryOptions = computed(() => {
 })
 
 
-
-interface IncomeItem {
-  id: number,
-  category: string,
-  income_month: string,
-  income_value: number,
-}
-
 const emit = defineEmits<{
-  registered: [item: IncomeItem]
+  registered: [item: Item]
 }>();
 
 const register = async () => {
