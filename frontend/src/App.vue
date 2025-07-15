@@ -30,13 +30,11 @@ menuItems.value = [
     title: '支出分析',
     icon: 'mdi-cash-off',
     to: '/expenses',
-    // type: 'expenses',
   },
   {
     title: '収入分析',
     icon: 'mdi-cash-multiple',
     to: '/incomes',
-    // type: 'incomes',
   },
   {
     title: '予算管理',
@@ -49,13 +47,6 @@ const logout = async () => {
   await authStore.logout()
   await router.push('/')
 }
-
-// const setType = (type: string) => {
-//   if (type === 'income' || type === 'expense') {
-//     typeStore.setType(type)
-//     console.log("type:",typeStore.type)
-//   }
-// }
 
 
 onMounted( ()  =>  {

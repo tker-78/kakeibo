@@ -2,12 +2,14 @@
 
 import { defineProps, ref, computed } from 'vue';
 import { supabase } from '@/lib/supabaseClient';
+import { useAuthStore } from '@/stores/auth';
 import type { Item } from '@/types/item'
 
 const props = defineProps<{
   type: 'income' | 'expense',
 }>()
 
+const authStore = useAuthStore();
 const category = ref<string>('');
 const value = ref<number | null>(null);
 const month = ref<string>('');
@@ -28,11 +30,11 @@ const emit = defineEmits<{
 }>();
 
 const register = async () => {
-
   // supabaseのincomeテーブルに登録(INSERT)
   if (props.type === 'income') {
     const { data, error } = await supabase.from('incomes').insert(
       [{
+        user_id: authStore.user?.id,
         category: category.value,
         income_month: month.value,
         income_value: value.value,
@@ -50,6 +52,7 @@ const register = async () => {
   } else if (props.type === 'expense') {
     const { data, error } = await supabase.from('expenses').insert(
       [{
+        user_id: authStore.user?.id,
         category: category.value,
         expense_month: month.value,
         expense_value: value.value,
