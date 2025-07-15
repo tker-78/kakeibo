@@ -2,6 +2,7 @@
 import { useDateStore } from '@/stores/date';
 import { useHeaderStore } from '@/stores/header';
 import { useTypeStore } from '@/stores/type';
+import { useAuthStore } from '@/stores/auth';
 import { onMounted, ref, watch } from 'vue';
 import RegisterIncomeExpense from '@/components/RegisterIncomeExpense.vue'
 import PieChart from '@/components/PieChart.vue'
@@ -15,6 +16,7 @@ import type { Item } from '@/types/item'
 const dateStore = useDateStore();
 const headerStore = useHeaderStore();
 const typeStore = useTypeStore();
+const authStore = useAuthStore();
 
 const incomeData = ref<Item[]>([])
 const incomeByCategory = ref<number[]>([])
@@ -56,6 +58,7 @@ const getIncomeListForThisMonth = async (date: string) => {
   const { data, error } = await supabase
     .from('incomes')
     .select('*')
+    .eq('user_id', authStore.user?.id)
     .gte('income_month', start)
     .lte('income_month', end)
 
@@ -95,6 +98,7 @@ const getIncomeByCategory = async (date: string) => {
   const { data, error } = await supabase
       .from('incomes')
       .select('*')
+      .eq('user_id', authStore.user?.id)
       .gte('income_month', start)
       .lte('income_month', end)
 

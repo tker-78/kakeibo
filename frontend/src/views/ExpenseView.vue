@@ -2,6 +2,7 @@
 import { useHeaderStore } from '@/stores/header';
 import { useDateStore } from '@/stores/date';
 import { useTypeStore } from '@/stores/type';
+import { useAuthStore } from '@/stores/auth';
 import { onMounted, ref, watch } from 'vue';
 import { supabase } from '@/lib/supabaseClient';
 import MonthPicker from '@/components/MonthPicker.vue'
@@ -14,6 +15,7 @@ import type { Item } from '@/types/item'
 
 const dateStore = useDateStore();
 const headerStore = useHeaderStore();
+const authStore = useAuthStore();
 const typeStore = useTypeStore();
 const expenseData = ref<Item[]>([])
 const expenseByCategory = ref<number[]>([])
@@ -30,6 +32,7 @@ const getExpenseDataForThisMonth = async (date: string) => {
   const { data, error } = await supabase
     .from('expenses')
     .select('*')
+    .eq('user_id', authStore.user?.id)
     .gte('expense_month', start)
     .lte('expense_month', end)
 
@@ -68,6 +71,7 @@ const getExpenseByCategory = async (date: string) => {
   const { data, error } = await supabase
     .from('expenses')
     .select('*')
+    .eq('user_id', authStore.user?.id)
     .gte('expense_month', start)
     .lte('expense_month', end)
 
@@ -97,10 +101,6 @@ const getExpenseByCategory = async (date: string) => {
   console.log(expenseByCategory.value)
 }
 
-// const handleExpenseRegistered = async (item: Item) => {
-//   expenseData.value.push(item)
-//   await getExpenseByCategory(dateStore.date)
-// }
 
 const fetchData = async () => {
   await getExpenseDataForThisMonth(dateStore.date)
@@ -112,6 +112,7 @@ onMounted(() => {
   typeStore.setType('expenses')
   getExpenseDataForThisMonth(dateStore.date)
   getExpenseByCategory(dateStore.date)
+  console.log('authStore.user:', authStore.user?.id)
 })
 
 watch(
