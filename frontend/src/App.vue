@@ -2,10 +2,12 @@
 import {ref, onMounted } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 import { useHeaderStore } from '@/stores/header.ts'
+import { useTypeStore } from '@/stores/type'
 import { useRouter } from 'vue-router'
 
 const authStore = useAuthStore()
 const headerStore = useHeaderStore()
+const typeStore = useTypeStore()
 const router = useRouter()
 const drawer = ref(true)
 
@@ -13,6 +15,7 @@ interface MenuItem {
   title: string,
   icon?: string,
   to: string,
+  type?: 'income' | 'expense'
 }
 
 const menuItems = ref<MenuItem[]>([])
@@ -27,11 +30,13 @@ menuItems.value = [
     title: '支出分析',
     icon: 'mdi-cash-off',
     to: '/expenses',
+    // type: 'expenses',
   },
   {
     title: '収入分析',
     icon: 'mdi-cash-multiple',
     to: '/incomes',
+    // type: 'incomes',
   },
   {
     title: '予算管理',
@@ -44,6 +49,13 @@ const logout = async () => {
   await authStore.logout()
   await router.push('/')
 }
+
+// const setType = (type: string) => {
+//   if (type === 'income' || type === 'expense') {
+//     typeStore.setType(type)
+//     console.log("type:",typeStore.type)
+//   }
+// }
 
 
 onMounted( ()  =>  {
@@ -68,6 +80,7 @@ onMounted( ()  =>  {
           :title="item.title"
           :to="item.to"
           :prepend-icon="item.icon"
+          @click="setType(item.type)"
         >
         </v-list-item>
       </v-list>
