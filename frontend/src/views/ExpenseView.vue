@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useHeaderStore } from '@/stores/header';
 import { useDateStore } from '@/stores/date';
+import { useTypeStore } from '@/stores/type';
 import { onMounted, ref, watch } from 'vue';
 import { supabase } from '@/lib/supabaseClient';
 import MonthPicker from '@/components/MonthPicker.vue'
@@ -13,6 +14,7 @@ import type { Item } from '@/types/item'
 
 const dateStore = useDateStore();
 const headerStore = useHeaderStore();
+const typeStore = useTypeStore();
 const expenseData = ref<Item[]>([])
 const expenseByCategory = ref<number[]>([])
 
@@ -95,13 +97,19 @@ const getExpenseByCategory = async (date: string) => {
   console.log(expenseByCategory.value)
 }
 
-const handleExpenseRegistered = async (item: Item) => {
-  expenseData.value.push(item)
+// const handleExpenseRegistered = async (item: Item) => {
+//   expenseData.value.push(item)
+//   await getExpenseByCategory(dateStore.date)
+// }
+
+const fetchData = async () => {
+  await getExpenseDataForThisMonth(dateStore.date)
   await getExpenseByCategory(dateStore.date)
 }
 
 onMounted(() => {
   headerStore.setTitle('支出分析')
+  typeStore.setType('expenses')
   getExpenseDataForThisMonth(dateStore.date)
   getExpenseByCategory(dateStore.date)
 })
@@ -132,7 +140,7 @@ watch(
       <v-col col="12" sm="10" md="12" lg="6" xl="6">
         <RegisterIncomeExpense
           type="expense"
-          @registered="handleExpenseRegistered"
+          @registered="fetchData"
         ></RegisterIncomeExpense>
       </v-col>
     </v-row>
@@ -145,6 +153,7 @@ watch(
             { label: '金額', key: 'expense_value'},
           ]"
           :items="expenseData"
+          @deleted="fetchData"
         ></ListTable>
       </v-col>
     </v-row>

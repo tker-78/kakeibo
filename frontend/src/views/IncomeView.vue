@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useDateStore } from '@/stores/date';
 import { useHeaderStore } from '@/stores/header';
+import { useTypeStore } from '@/stores/type';
 import { onMounted, ref, watch } from 'vue';
 import RegisterIncomeExpense from '@/components/RegisterIncomeExpense.vue'
 import PieChart from '@/components/PieChart.vue'
@@ -13,6 +14,7 @@ import type { Item } from '@/types/item'
 
 const dateStore = useDateStore();
 const headerStore = useHeaderStore();
+const typeStore = useTypeStore();
 
 const incomeData = ref<Item[]>([])
 const incomeByCategory = ref<number[]>([])
@@ -120,14 +122,14 @@ const getIncomeByCategory = async (date: string) => {
 
 }
 
-const handleIncomeRegistered = async (item: Item) => {
-  incomeData.value.push(item)
+const fetchData = async () => {
+  await getIncomeListForThisMonth(dateStore.date)
   await getIncomeByCategory(dateStore.date)
-
 }
 
 onMounted(async () => {
   headerStore.setTitle('収入分析')
+  typeStore.setType('incomes')
   await getIncomeListForThisMonth(dateStore.date)
   await getIncomeByCategory(dateStore.date)
 })
@@ -158,7 +160,7 @@ watch(
       <v-col col="12" sm="10" md="12" lg="6" xl="6">
         <RegisterIncomeExpense
           type="income"
-          @registered="handleIncomeRegistered"
+          @registered="fetchData"
         ></RegisterIncomeExpense>
       </v-col>
     </v-row>
@@ -166,11 +168,12 @@ watch(
       <v-col col="12" sm="10" md="12" lg="6" xl="6">
         <ListTable
           :columns="[
-            { label: '月', key: 'income_month'},
+            { label: '日付', key: 'income_month'},
             { label: 'カテゴリ', key: 'category'},
             { label: '金額', key: 'income_value'},
           ]"
-        :items="incomeData"
+          :items="incomeData"
+          @deleted="fetchData"
         ></ListTable>
       </v-col>
     </v-row>
