@@ -71,7 +71,6 @@ onMounted( ()  =>  {
           :title="item.title"
           :to="item.to"
           :prepend-icon="item.icon"
-          @click="setType(item.type)"
         >
         </v-list-item>
       </v-list>
