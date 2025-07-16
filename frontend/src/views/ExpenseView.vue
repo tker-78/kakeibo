@@ -8,9 +8,9 @@ import { supabase } from '@/lib/supabaseClient';
 import MonthPicker from '@/components/MonthPicker.vue'
 import PieChart from '@/components/PieChart.vue'
 import ListTable from '@/components/ListTable.vue'
-import RegisterIncomeExpense from '@/components/RegisterIncomeExpense.vue'
+import RegisterData from '@/components/RegisterData.vue'
 import { lists } from '@/constants/lists'
-import type { Item } from '@/types/item'
+import type { Item } from '@/types/Item.ts'
 
 
 const dateStore = useDateStore();
@@ -139,10 +139,10 @@ watch(
     </v-row>
     <v-row class="d-flex justify-center">
       <v-col col="12" sm="10" md="12" lg="6" xl="6">
-        <RegisterIncomeExpense
+        <RegisterData
           type="expense"
           @registered="fetchData"
-        ></RegisterIncomeExpense>
+        ></RegisterData>
       </v-col>
     </v-row>
     <v-row class="d-flex justify-center">
