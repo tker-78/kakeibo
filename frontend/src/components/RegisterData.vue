@@ -3,10 +3,10 @@
 import { defineProps, ref, computed } from 'vue';
 import { supabase } from '@/lib/supabaseClient';
 import { useAuthStore } from '@/stores/auth';
-import type { Item } from '@/types/item'
+import type { Item } from '@/types/Item.ts'
 
 const props = defineProps<{
-  type: 'income' | 'expense',
+  type: 'income' | 'expense' | 'budget',
 }>()
 
 const authStore = useAuthStore();
@@ -21,13 +21,14 @@ const categoryOptions = computed(() => {
   if (props.type === 'expense') {
     return [ '食費', '交通費', '住宅費', '医療費', '教育費', '投資', 'その他費', ]
   }
+  if (props.type === 'budget') {
+    return [ '食費', '交通費', '住宅費', '医療費', '教育費', '投資', 'その他費', ]
+  }
   return []
 })
 
 
-const emit = defineEmits<{
-  registered: [item: Item]
-}>();
+const emit = defineEmits('registered');
 
 const register = async () => {
   // supabaseのincomeテーブルに登録(INSERT)
@@ -47,7 +48,7 @@ const register = async () => {
       // success
       console.log('収入の登録に成功しました。')
       console.log('data:', data)
-      emit('registered', data[0])
+      emit('registered')
     }
   } else if (props.type === 'expense') {
     const { data, error } = await supabase.from('expenses').insert(
@@ -63,7 +64,24 @@ const register = async () => {
       // success
       console.log('支出の登録に成功しました。')
       console.log('data:', data)
-      emit('registered', data[0])
+      emit('registered')
+    }
+  } else if (props.type === 'budget') {
+    const { data, error } = await supabase.from('budgets').insert(
+      [{
+        user_id: authStore.user?.id,
+        category: category.value,
+        budget_month: month.value,
+        budget_value: value.value,
+      }]).select()
+
+    if (error) {
+      console.log('error:', error)
+    } else {
+      // success
+      console.log('予算の登録に成功しました。')
+      console.log('data:', data)
+      emit('registered')
     }
   }
 }
@@ -80,6 +98,7 @@ const register = async () => {
             <v-icon large color="primary">mdi-cash</v-icon>
             <span v-if="type === 'income'">収入を登録</span>
             <span v-if="type === 'expense'">支出を登録</span>
+            <span v-if="type === 'budget'">予算を登録</span>
           </v-card-title>
           <v-card-text>
             <v-form @submit.prevent>
