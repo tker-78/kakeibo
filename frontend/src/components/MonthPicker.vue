@@ -4,7 +4,7 @@ import { ref, onMounted } from 'vue'
 
 const dateStore = useDateStore()
 
-const month = ref<number>('')
+const month = ref<number>(0)
 
 const setMonth = (month: number) => {
   dateStore.setMonth(month)

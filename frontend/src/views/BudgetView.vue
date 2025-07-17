@@ -122,6 +122,7 @@ watch(
   () => dateStore.date,
   async (newDate: string) => {
     await getBudgetItems(newDate)
+    await getBudgetByCategory(newDate)
     await getBudgetTotal(newDate)
   }
 )
@@ -143,11 +144,9 @@ onMounted(() => {
     <v-row class="d-flex justify-center">
       <v-col col="12" sm="10" md="12" lg="6" xl="6">
         <PieChart
-          v-if="budgetList.length > 0"
           :labels="lists.budget_labels"
           :items="budgetList"
         />
-        <div v-else>データ取得中</div>
       </v-col>
     </v-row>
     <v-row class="d-flex justify-center">
