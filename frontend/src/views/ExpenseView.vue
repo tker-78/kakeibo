@@ -141,7 +141,7 @@ watch(
       <v-col col="12" sm="10" md="12" lg="6" xl="6">
         <RegisterData
           type="expense"
-          @registered="fetchData"
+           @registered="fetchData"
         ></RegisterData>
       </v-col>
     </v-row>

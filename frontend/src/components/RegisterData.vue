@@ -21,6 +21,9 @@ const categoryOptions = computed(() => {
   if (props.type === 'expense') {
     return [ '食費', '交通費', '住宅費', '医療費', '教育費', '投資', 'その他費', ]
   }
+  if (props.type === 'budget') {
+    return [ '食費', '交通費', '住宅費', '医療費', '教育費', '投資', 'その他費', ]
+  }
   return []
 })
 
@@ -95,6 +98,7 @@ const register = async () => {
             <v-icon large color="primary">mdi-cash</v-icon>
             <span v-if="type === 'income'">収入を登録</span>
             <span v-if="type === 'expense'">支出を登録</span>
+            <span v-if="type === 'budget'">予算を登録</span>
           </v-card-title>
           <v-card-text>
             <v-form @submit.prevent>
