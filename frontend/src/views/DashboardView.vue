@@ -5,6 +5,7 @@ import { useHeaderStore } from '@/stores/header';
 import { onMounted, ref, watch } from 'vue';
 
 import PieChart from '@/components/PieChart.vue'
+import BarChart from '@/components/BarChart.vue'
 import MonthPicker from '@/components/MonthPicker.vue'
 import { lists } from '@/constants/lists'
 import { supabase } from '@/lib/supabaseClient.ts'
@@ -156,6 +157,14 @@ watch(
           :labels="lists.expense_labels"
           :items="expenseByCategory"
         ></PieChart>
+      </v-col>
+    </v-row>
+    <v-row class="d-flex justify-center">
+      <v-col col="12">
+        <BarChart
+          :labels="['食費', '交通費', '住宅費', '医療費', '教育費', '投資', 'その他費用']"
+          :items="[100, 200, 300]"
+        ></BarChart>
       </v-col>
     </v-row>
   </v-container>

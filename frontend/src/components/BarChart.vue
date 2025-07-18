@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
+import { Chart as ChartJS, Tooltip, Legend, Title, BarElement, CategoryScale, LinearScale } from 'chart.js'
 import { Bar } from 'vue-chartjs'
 import { ref, computed } from 'vue'
 
-ChartJS.register(ArcElement, Tooltip, Legend)
+ChartJS.register(Title, BarElement, CategoryScale, LinearScale, Tooltip, Legend)
 
 const props = defineProps<{
   labels: string[],
