@@ -142,7 +142,7 @@ onMounted(() => {
       <MonthPicker />
     </v-row>
     <v-row class="d-flex justify-center">
-      <v-col col="12" sm="10" md="12" lg="6" xl="6">
+      <v-col col="12" sm="10" md="12" lg="10" xl="10">
         <PieChart
           :labels="lists.budget_labels"
           :items="budgetList"
@@ -150,7 +150,7 @@ onMounted(() => {
       </v-col>
     </v-row>
     <v-row class="d-flex justify-center">
-      <v-col col="12" sm="10" md="12" lg="6" xl="6">
+      <v-col col="12" sm="10" md="12" lg="10" xl="10">
         <RegisterData
           type="budget"
           @registered="fetchData"
@@ -158,7 +158,7 @@ onMounted(() => {
       </v-col>
     </v-row>
     <v-row class="d-flex justify-center">
-      <v-col col="12" sm="10" md="12" lg="6" xl="6">
+      <v-col col="12" sm="10" md="12" lg="10" xl="10">
         <ListTable
           :columns="[
             // { label: '月', key: 'budget_month'},

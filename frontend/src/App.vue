@@ -2,12 +2,10 @@
 import {ref, onMounted } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 import { useHeaderStore } from '@/stores/header.ts'
-import { useTypeStore } from '@/stores/type'
 import { useRouter } from 'vue-router'
 
 const authStore = useAuthStore()
 const headerStore = useHeaderStore()
-const typeStore = useTypeStore()
 const router = useRouter()
 const drawer = ref(true)
 
@@ -59,7 +57,6 @@ onMounted( ()  =>  {
 <template>
   <v-app>
     <v-navigation-drawer
-      app
       v-model="drawer"
       class="pt-4"
       color="grey-lighten-3"
@@ -77,7 +74,7 @@ onMounted( ()  =>  {
     </v-navigation-drawer>
 
       <!--header -->
-      <v-app-bar app>
+      <v-app-bar>
         <template v-slot:prepend>
           <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
         </template>
@@ -92,21 +89,17 @@ onMounted( ()  =>  {
         </div>
       </v-app-bar>
     <!-- main content -->
-    <v-main app>
-      <v-container fluid >
-        <router-view></router-view>
-      </v-container>
+    <v-main>
+      <router-view/>
     </v-main>
-
   </v-app>
 </template>
 
 
 <style scoped>
 .v-application {
-  width: 100vw;
+  max-width: 100vw;
 }
-
 
 
 </style>

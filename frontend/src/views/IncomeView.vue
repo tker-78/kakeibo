@@ -154,14 +154,14 @@ watch(
       <MonthPicker/>
     </v-row>
     <v-row class="d-flex justify-center">
-      <v-col col="12" sm="6" md="6" lg="6" xl="6">
+      <v-col col="12" sm="10" md="12" lg="10" xl="10">
         <PieChart
             :labels="lists.income_labels"
             :items="incomeByCategory"></PieChart>
       </v-col>
     </v-row>
     <v-row class="d-flex justify-center">
-      <v-col col="12" sm="10" md="12" lg="6" xl="6">
+      <v-col col="12" sm="10" md="12" lg="10" xl="10">
         <RegisterData
           type="income"
           @registered="fetchData"
@@ -169,7 +169,7 @@ watch(
       </v-col>
     </v-row>
     <v-row class="d-flex justify-center">
-      <v-col col="12" sm="10" md="12" lg="6" xl="6">
+      <v-col col="12" sm="10" md="12" lg="10" xl="10">
         <ListTable
           :columns="[
             { label: '日付', key: 'income_month'},
