@@ -3,7 +3,6 @@
 import { defineProps, ref, computed } from 'vue';
 import { supabase } from '@/lib/supabaseClient';
 import { useAuthStore } from '@/stores/auth';
-import type { Item } from '@/types/Item.ts'
 
 const props = defineProps<{
   type: 'income' | 'expense' | 'budget',
