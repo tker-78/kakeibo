@@ -27,7 +27,7 @@ const categoryOptions = computed(() => {
 })
 
 
-const emit = defineEmits<{ e: string, registered: () => void}>() ;
+const emit = defineEmits<{ registered: []}>() ;
 
 const register = async () => {
   // supabaseのincomeテーブルに登録(INSERT)
