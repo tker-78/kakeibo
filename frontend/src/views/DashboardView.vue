@@ -16,6 +16,7 @@ const headerStore = useHeaderStore();
 
 const incomeByCategory= ref<number[]>([])
 const expenseByCategory= ref<number[]>([])
+const budgetDataByCategory = ref<number[]>([] )
 
 
 const getExpenseByCategory = async (date: string) => {
@@ -107,15 +108,66 @@ const getIncomeByCategory = async (date: string) => {
       }
     }
   }
-
-  // console.log('data:', data)
   incomeByCategory.value = [sum_salary, sum_realstate, sum_support, sum_other]
-  // console.log(incomeByCategory.value)
+}
+
+const getBudget = async ( date: string) => {
+  const dateObject = new Date(date)
+  const startObject = new Date(dateObject.getFullYear(), dateObject.getMonth(), 2)
+  const endObject = new Date(dateObject.getFullYear(), dateObject.getMonth()+ 1, 1)
+  const start = startObject.toISOString().split('T')[0]
+  const end = endObject.toISOString().split('T')[0]
+  console.log('start:', start)
+  console.log('end:', end)
+
+  let food = 0
+  let transport = 0
+  let house = 0
+  let medical = 0
+  let education = 0
+  let investment = 0
+  let other = 0
+
+  const { data, error } = await supabase
+    .from('budgets')
+    .select('*')
+    .eq('user_id', authStore.user?.id)
+    .gte('budget_month', start)
+    .lte('budget_month', end)
+
+  if (error) {
+    console.log('error:', error)
+  } else {
+    for (const item of data) {
+      if (item.category === '食費') {
+        food += item.budget_value
+      } else if (item.category === '交通費') {
+        transport += item.budget_value
+      } else if (item.category === '住宅費') {
+        house += item.budget_value
+      } else if (item.category === '医療費') {
+        medical += item.budget_value
+      } else if (item.category === '教育費') {
+        education += item.budget_value
+      } else if (item.category === '投資') {
+        investment += item.budget_value
+      } else if (item.category === 'その他費用') {
+        other += item.budget_value
+      }
+    }
+    budgetDataByCategory.value = [food, transport, house, medical, education, investment, other]
+    console.log('budgetList:', budgetDataByCategory.value)
+  }
+
+
+
+
 }
 
 const fetchData = async () => {
   await getExpenseByCategory(dateStore.date)
   await getIncomeByCategory(dateStore.date)
+  await getBudget(dateStore.date)
 }
 
 
@@ -131,6 +183,7 @@ watch(
   async (newDate: string) => {
     await getExpenseByCategory(newDate)
     await getIncomeByCategory(newDate)
+    await getBudget(newDate)
   }
 )
 
@@ -163,7 +216,7 @@ watch(
       <v-col col="12">
         <BarChart
           :labels="['食費', '交通費', '住宅費', '医療費', '教育費', '投資', 'その他費用']"
-          :items="[100, 200, 300]"
+          :items="[expenseByCategory, budgetDataByCategory]"
         ></BarChart>
       </v-col>
     </v-row>
