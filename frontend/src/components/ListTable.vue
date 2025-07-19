@@ -83,7 +83,7 @@ const deleteItem = async () => {
 
 <style scoped>
 .table-list {
-  margin: 100px 100px;
+  margin: 10px 10px;
 }
 
 </style>
