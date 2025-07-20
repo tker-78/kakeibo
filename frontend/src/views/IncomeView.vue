@@ -7,13 +7,14 @@ import { useTypeStore } from '@/stores/type';
 import { useAuthStore } from '@/stores/auth';
 import { lists } from '@/constants/lists'
 import type { Item } from '@/types/Item.ts'
-import { getMonthRange } from '@/helpers/date.ts'
+import { incomeHelpers } from '@/helpers/income.ts'
 
 import RegisterData from '@/components/RegisterData.vue'
 import PieChart from '@/components/PieChart.vue'
 import ListTable from '@/components/ListTable.vue'
 import { supabase } from '@/lib/supabaseClient';
 import MonthPicker from '@/components/MonthPicker.vue'
+import { getMonthRange } from '@/helpers/date.ts'
 
 
 const dateStore = useDateStore();
@@ -41,64 +42,55 @@ const getIncomeListData = async () => {
         incomeData.value.push(item)
       }
     }
-    // console.log('incomeData:', incomeData.value)
   }
 }
 
-const getIncomeListForThisMonth = async (date: string) => {
+const getIncomeListForThisMonth = async () => {
   incomeData.value = []
-  // const dateObject = new Date(date)
-  // const startObject = new Date(dateObject.getFullYear(), dateObject.getMonth(), 2)
-  // const endObject = new Date(dateObject.getFullYear(), dateObject.getMonth()+ 1, 1)
-  // const start = startObject.toISOString().split('T')[0]
-  // const end = endObject.toISOString().split('T')[0]
-  const { start, end } = getMonthRange(date)
-  console.log('start:', start)
-  console.log('end:', end)
 
+  // const { data, error } = await supabase
+  //   .from('incomes')
+  //   .select('*')
+  //   .eq('user_id', authStore.user?.id)
+  //   .gte('income_month', start)
+  //   .lte('income_month', end)
+  //
+  // if (error) {
+  //   console.log('error:', error)
+  //   console.log('data:', data)
+  //   console.log('収入の取得に失敗しました。もう一度試してください。')
+  // } else {
+  //   for (const item of data) {
+  //     if (item.income_value != null) {
+  //       incomeData.value.push(item)
+  //     }
+  //   }
+  // }
 
-  // const start = date.split('-')[0] + '-' + dateStore.date.split('-')[1] + '-01'
-  // const end = date.split('-')[0] + '-' + dateStore.date.split('-')[1] + '-31'
-  const { data, error } = await supabase
-    .from('incomes')
-    .select('*')
-    .eq('user_id', authStore.user?.id)
-    .gte('income_month', start)
-    .lte('income_month', end)
+  const data = await incomeHelpers.getIncomeListForThisMonth(authStore.user.id, dateStore.date)
 
-  if (error) {
-    console.log('error:', error)
-    console.log('data:', data)
-    console.log('収入の取得に失敗しました。もう一度試してください。')
-  } else {
+  if (data != null) {
     for (const item of data) {
       if (item.income_value != null) {
         incomeData.value.push(item)
       }
     }
   }
-  console.log('incomeData:', incomeData.value)
+
 }
 
 
 const getIncomeByCategory = async (date: string) => {
   // グラフでの集計は月単位だから、7月を指定した場合は、7/1を使う。
   // リストから情報を取得する際は、7月1日から31日までのデータを取得する。
-  // const dateObject = new Date(date)
-  // const startObject = new Date(dateObject.getFullYear(), dateObject.getMonth(), 2)
-  // const endObject = new Date(dateObject.getFullYear(), dateObject.getMonth()+ 1, 1)
-  // const start = startObject.toISOString().split('T')[0]
-  // const end = endObject.toISOString().split('T')[0]
   const { start, end } = getMonthRange(date)
   console.log('start:', start)
   console.log('end:', end)
-
 
   let sum_salary = 0
   let sum_realstate = 0
   let sum_support = 0
   let sum_other = 0
-
 
   const { data, error } = await supabase
       .from('incomes')
@@ -106,7 +98,6 @@ const getIncomeByCategory = async (date: string) => {
       .eq('user_id', authStore.user?.id)
       .gte('income_month', start)
       .lte('income_month', end)
-
 
   if (error) {
     // todo
@@ -132,14 +123,14 @@ const getIncomeByCategory = async (date: string) => {
 }
 
 const fetchData = async () => {
-  await getIncomeListForThisMonth(dateStore.date)
+  await getIncomeListForThisMonth()
   await getIncomeByCategory(dateStore.date)
 }
 
 onMounted(async () => {
   headerStore.setTitle('収入分析')
   typeStore.setType('incomes')
-  await getIncomeListForThisMonth(dateStore.date)
+  await getIncomeListForThisMonth()
   await getIncomeByCategory(dateStore.date)
 })
 
