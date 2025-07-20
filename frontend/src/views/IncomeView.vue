@@ -1,16 +1,19 @@
 <script setup lang="ts">
+import { onMounted, ref, watch } from 'vue';
+
 import { useDateStore } from '@/stores/date';
 import { useHeaderStore } from '@/stores/header';
 import { useTypeStore } from '@/stores/type';
 import { useAuthStore } from '@/stores/auth';
-import { onMounted, ref, watch } from 'vue';
+import { lists } from '@/constants/lists'
+import type { Item } from '@/types/Item.ts'
+import { getMonthRange } from '@/helpers/date.ts'
+
 import RegisterData from '@/components/RegisterData.vue'
 import PieChart from '@/components/PieChart.vue'
 import ListTable from '@/components/ListTable.vue'
 import { supabase } from '@/lib/supabaseClient';
 import MonthPicker from '@/components/MonthPicker.vue'
-import { lists } from '@/constants/lists'
-import type { Item } from '@/types/Item.ts'
 
 
 const dateStore = useDateStore();
@@ -44,11 +47,12 @@ const getIncomeListData = async () => {
 
 const getIncomeListForThisMonth = async (date: string) => {
   incomeData.value = []
-  const dateObject = new Date(date)
-  const startObject = new Date(dateObject.getFullYear(), dateObject.getMonth(), 2)
-  const endObject = new Date(dateObject.getFullYear(), dateObject.getMonth()+ 1, 1)
-  const start = startObject.toISOString().split('T')[0]
-  const end = endObject.toISOString().split('T')[0]
+  // const dateObject = new Date(date)
+  // const startObject = new Date(dateObject.getFullYear(), dateObject.getMonth(), 2)
+  // const endObject = new Date(dateObject.getFullYear(), dateObject.getMonth()+ 1, 1)
+  // const start = startObject.toISOString().split('T')[0]
+  // const end = endObject.toISOString().split('T')[0]
+  const { start, end } = getMonthRange(date)
   console.log('start:', start)
   console.log('end:', end)
 
@@ -80,11 +84,12 @@ const getIncomeListForThisMonth = async (date: string) => {
 const getIncomeByCategory = async (date: string) => {
   // グラフでの集計は月単位だから、7月を指定した場合は、7/1を使う。
   // リストから情報を取得する際は、7月1日から31日までのデータを取得する。
-  const dateObject = new Date(date)
-  const startObject = new Date(dateObject.getFullYear(), dateObject.getMonth(), 2)
-  const endObject = new Date(dateObject.getFullYear(), dateObject.getMonth()+ 1, 1)
-  const start = startObject.toISOString().split('T')[0]
-  const end = endObject.toISOString().split('T')[0]
+  // const dateObject = new Date(date)
+  // const startObject = new Date(dateObject.getFullYear(), dateObject.getMonth(), 2)
+  // const endObject = new Date(dateObject.getFullYear(), dateObject.getMonth()+ 1, 1)
+  // const start = startObject.toISOString().split('T')[0]
+  // const end = endObject.toISOString().split('T')[0]
+  const { start, end } = getMonthRange(date)
   console.log('start:', start)
   console.log('end:', end)
 

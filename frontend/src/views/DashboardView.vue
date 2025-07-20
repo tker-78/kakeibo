@@ -9,6 +9,7 @@ import BarChart from '@/components/BarChart.vue'
 import MonthPicker from '@/components/MonthPicker.vue'
 import { lists } from '@/constants/lists'
 import { supabase } from '@/lib/supabaseClient.ts'
+import { getMonthRange } from '@/helpers/date.ts'
 
 const authStore = useAuthStore();
 const dateStore = useDateStore();
@@ -20,11 +21,14 @@ const budgetDataByCategory = ref<number[]>([] )
 
 
 const getExpenseByCategory = async (date: string) => {
-  const dateObject = new Date(date)
-  const startObject = new Date(dateObject.getFullYear(), dateObject.getMonth(), 2)
-  const endObject = new Date(dateObject.getFullYear(), dateObject.getMonth() + 1, 1)
-  const start = startObject.toISOString().split('T')[0]
-  const end = endObject.toISOString().split('T')[0]
+  // const dateObject = new Date(date)
+  // const startObject = new Date(dateObject.getFullYear(), dateObject.getMonth(), 2)
+  // const endObject = new Date(dateObject.getFullYear(), dateObject.getMonth() + 1, 1)
+  // const start = startObject.toISOString().split('T')[0]
+  // const end = endObject.toISOString().split('T')[0]
+  const { start, end } = getMonthRange(date)
+  console.log('start:', start)
+  console.log('end:', end)
 
   let sum_food = 0
   let sum_transprot = 0
@@ -70,11 +74,12 @@ const getExpenseByCategory = async (date: string) => {
 const getIncomeByCategory = async (date: string) => {
   // グラフでの集計は月単位だから、7月を指定した場合は、7/1を使う。
   // リストから情報を取得する際は、7月1日から31日までのデータを取得する。
-  const dateObject = new Date(date)
-  const startObject = new Date(dateObject.getFullYear(), dateObject.getMonth(), 2)
-  const endObject = new Date(dateObject.getFullYear(), dateObject.getMonth()+ 1, 1)
-  const start = startObject.toISOString().split('T')[0]
-  const end = endObject.toISOString().split('T')[0]
+  // const dateObject = new Date(date)
+  // const startObject = new Date(dateObject.getFullYear(), dateObject.getMonth(), 2)
+  // const endObject = new Date(dateObject.getFullYear(), dateObject.getMonth()+ 1, 1)
+  // const start = startObject.toISOString().split('T')[0]
+  // const end = endObject.toISOString().split('T')[0]
+  const { start, end } = getMonthRange(date)
   console.log('start:', start)
   console.log('end:', end)
 
@@ -112,11 +117,12 @@ const getIncomeByCategory = async (date: string) => {
 }
 
 const getBudget = async ( date: string) => {
-  const dateObject = new Date(date)
-  const startObject = new Date(dateObject.getFullYear(), dateObject.getMonth(), 2)
-  const endObject = new Date(dateObject.getFullYear(), dateObject.getMonth()+ 1, 1)
-  const start = startObject.toISOString().split('T')[0]
-  const end = endObject.toISOString().split('T')[0]
+  // const dateObject = new Date(date)
+  // const startObject = new Date(dateObject.getFullYear(), dateObject.getMonth(), 2)
+  // const endObject = new Date(dateObject.getFullYear(), dateObject.getMonth()+ 1, 1)
+  // const start = startObject.toISOString().split('T')[0]
+  // const end = endObject.toISOString().split('T')[0]
+  const { start, end } = getMonthRange(date)
   console.log('start:', start)
   console.log('end:', end)
 

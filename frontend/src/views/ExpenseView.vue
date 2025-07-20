@@ -1,14 +1,18 @@
 <script setup lang="ts">
+import { onMounted, ref, watch } from 'vue';
+
 import { useHeaderStore } from '@/stores/header';
 import { useDateStore } from '@/stores/date';
 import { useTypeStore } from '@/stores/type';
 import { useAuthStore } from '@/stores/auth';
-import { onMounted, ref, watch } from 'vue';
 import { supabase } from '@/lib/supabaseClient';
+import { getMonthRange } from '@/helpers/date.ts'
+
 import MonthPicker from '@/components/MonthPicker.vue'
 import PieChart from '@/components/PieChart.vue'
 import ListTable from '@/components/ListTable.vue'
 import RegisterData from '@/components/RegisterData.vue'
+
 import { lists } from '@/constants/lists'
 import type { Item } from '@/types/Item.ts'
 
@@ -23,11 +27,14 @@ const expenseByCategory = ref<number[]>([])
 
 const getExpenseDataForThisMonth = async (date: string) => {
   expenseData.value = []
-  const dateObject = new Date(date)
-  const startObject = new Date(dateObject.getFullYear(), dateObject.getMonth(), 2)
-  const endObject = new Date(dateObject.getFullYear(), dateObject.getMonth() + 1, 1)
-  const start = startObject.toISOString().split('T')[0]
-  const end = endObject.toISOString().split('T')[0]
+  // const dateObject = new Date(date)
+  // const startObject = new Date(dateObject.getFullYear(), dateObject.getMonth(), 2)
+  // const endObject = new Date(dateObject.getFullYear(), dateObject.getMonth() + 1, 1)
+  // const start = startObject.toISOString().split('T')[0]
+  // const end = endObject.toISOString().split('T')[0]
+  const { start, end } = getMonthRange(date)
+  console.log('start:', start)
+  console.log('end:', end)
 
   const { data, error } = await supabase
     .from('expenses')
@@ -54,11 +61,14 @@ const getExpenseDataForThisMonth = async (date: string) => {
 }
 
 const getExpenseByCategory = async (date: string) => {
-  const dateObject = new Date(date)
-  const startObject = new Date(dateObject.getFullYear(), dateObject.getMonth(), 2)
-  const endObject = new Date(dateObject.getFullYear(), dateObject.getMonth() + 1, 1)
-  const start = startObject.toISOString().split('T')[0]
-  const end = endObject.toISOString().split('T')[0]
+  // const dateObject = new Date(date)
+  // const startObject = new Date(dateObject.getFullYear(), dateObject.getMonth(), 2)
+  // const endObject = new Date(dateObject.getFullYear(), dateObject.getMonth() + 1, 1)
+  // const start = startObject.toISOString().split('T')[0]
+  // const end = endObject.toISOString().split('T')[0]
+  const { start, end } = getMonthRange(date)
+  console.log('start:', start)
+  console.log('end:', end)
 
   let sum_food = 0
   let sum_transprot = 0
