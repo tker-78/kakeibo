@@ -3,6 +3,7 @@ import { getMonthRange } from '@/helpers/date'
 
 export const incomeHelpers = {
   getIncomeListForThisMonth: async (user_id: string, date: string ) => {
+    const list = []
     const { start, end } = getMonthRange(date)
     const { data, error } = await supabase
       .from('incomes')
@@ -15,8 +16,16 @@ export const incomeHelpers = {
       console.log('error:', error)
       return []
     }
-    console.log('data:', data)
-    return data
+
+    if ( data === null ) { return [] }
+
+    for (const item of data) {
+      if (item.income_value != null) {
+        list.push(item)
+      }
+    }
+    return list
+
   },
   getIncomeByCategory: async (user_id: string, date: string) => {
     const { start, end } = getMonthRange(date)

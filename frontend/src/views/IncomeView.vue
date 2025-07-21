@@ -12,9 +12,7 @@ import { incomeHelpers } from '@/helpers/income.ts'
 import RegisterData from '@/components/RegisterData.vue'
 import PieChart from '@/components/PieChart.vue'
 import ListTable from '@/components/ListTable.vue'
-import { supabase } from '@/lib/supabaseClient';
 import MonthPicker from '@/components/MonthPicker.vue'
-import { getMonthRange } from '@/helpers/date.ts'
 
 
 const dateStore = useDateStore();
@@ -30,15 +28,7 @@ const getIncomeListForThisMonth = async () => {
   incomeData.value = []
   if (!authStore.user?.id )  { return }
 
-  const data = await incomeHelpers.getIncomeListForThisMonth(authStore.user.id, dateStore.date)
-
-  if (data != null) {
-    for (const item of data) {
-      if (item.income_value != null) {
-        incomeData.value.push(item)
-      }
-    }
-  }
+  incomeData.value = await incomeHelpers.getIncomeListForThisMonth(authStore.user.id, dateStore.date)
 }
 
 
