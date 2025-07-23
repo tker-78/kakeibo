@@ -24,11 +24,11 @@ const incomeData = ref<Item[]>([])
 const incomeByCategory = ref<number[]>([])
 
 
-const getIncomeListForThisMonth = async () => {
+const getIncomeListForThisMonth = async (date: string) => {
   incomeData.value = []
   if (!authStore.user?.id )  { return }
 
-  incomeData.value = await incomeHelpers.getIncomeListForThisMonth(authStore.user.id, dateStore.date)
+  incomeData.value = await incomeHelpers.getIncomeListForThisMonth(authStore.user.id, date)
 }
 
 
@@ -41,14 +41,14 @@ const getIncomeByCategory = async (date: string) => {
 }
 
 const fetchData = async () => {
-  await getIncomeListForThisMonth()
+  await getIncomeListForThisMonth(dateStore.date)
   await getIncomeByCategory(dateStore.date)
 }
 
 onMounted(async () => {
   headerStore.setTitle('収入分析')
   typeStore.setType('incomes')
-  await getIncomeListForThisMonth()
+  await getIncomeListForThisMonth(dateStore.date)
   await getIncomeByCategory(dateStore.date)
 })
 

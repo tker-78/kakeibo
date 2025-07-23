@@ -30,7 +30,6 @@ export const expenseHelpers = {
     return list
   },
   getExpenseByCategory: async (user_id: string, date: string) => {
-    const list = []
 
     let sum_food = 0
     let sum_transprot = 0
