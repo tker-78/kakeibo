@@ -11,7 +11,9 @@ import RegisterData from '@/components/RegisterData.vue'
 import ListTable from '@/components/ListTable.vue'
 import PieChart from '@/components/PieChart.vue'
 
+
 import { lists } from '@/constants/lists'
+import { getMonthRange } from '@/helpers/date.ts'
 
 const authStore = useAuthStore();
 const headerStore = useHeaderStore();
@@ -25,13 +27,8 @@ const getBudgetItems = async (date: string) => {
   // 当月の予算データを取得する
   budgetData.value = []
   budgetList.value = []
-  const dateObject = new Date(date)
-  const startObject = new Date(dateObject.getFullYear(), dateObject.getMonth(), 2)
-  const endObject = new Date(dateObject.getFullYear(), dateObject.getMonth()+ 1, 1)
-  const start = startObject.toISOString().split('T')[0]
-  const end = endObject.toISOString().split('T')[0]
-  console.log('start:', start)
-  console.log('end:', end)
+
+  const { start, end} = getMonthRange(date)
 
   const { data, error } = await supabase
     .from('budgets')
@@ -56,13 +53,7 @@ const getBudgetItems = async (date: string) => {
 }
 
 const getBudgetByCategory = async (date: string) => {
-  const dateObject = new Date(date)
-  const startObject = new Date(dateObject.getFullYear(), dateObject.getMonth(), 2)
-  const endObject = new Date(dateObject.getFullYear(), dateObject.getMonth()+ 1, 1)
-  const start = startObject.toISOString().split('T')[0]
-  const end = endObject.toISOString().split('T')[0]
-  console.log('start:', start)
-  console.log('end:', end)
+  const { start, end} = getMonthRange(date)
 
   let food = 0
   let transport = 0
