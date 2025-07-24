@@ -43,10 +43,10 @@ onMounted(() => {
     item-value="value"
     :length="12"
     @update:model-value="setMonth(month)"
+    class="month-picker"
   ></v-select>
 </template>
 
 <style scoped>
-
 
 </style>
