@@ -9,8 +9,13 @@ export const useDateStore = defineStore('date', () => {
     date.value = `${char_year}-${month}-1`
   }
 
+  const getMonth = () => {
+    return Number(date.value.split('-')[1])
+  }
+
   return {
     date,
     setMonth,
+    getMonth,
   }
 })
