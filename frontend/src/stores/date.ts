@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 
 export const useDateStore = defineStore('date', () => {
   const date = ref<string>(new Date().toISOString().split('T')[0] )
@@ -13,8 +13,11 @@ export const useDateStore = defineStore('date', () => {
     return Number(date.value.split('-')[1])
   }
 
+  const month = computed(() => getMonth())
+
   return {
     date,
+    month,
     setMonth,
     getMonth,
   }

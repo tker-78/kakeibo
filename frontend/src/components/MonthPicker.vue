@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useDateStore } from '@/stores/date'
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
 
 const dateStore = useDateStore()
 
@@ -31,22 +31,62 @@ onMounted(() => {
   console.log(dateStore.date)
 })
 
+// モバイル判定
+const isMobile = computed(() => {
+  return window.innerWidth <= 768
+})
+
+const showBottomSheet = ref(false)
+
+const selectMonth = (month: number) => {
+  setMonth(month)
+  showBottomSheet.value = false
+}
+
+const selectedMonthText = computed(() => {
+  const found = months.value.find(m => m.value === dateStore.month)
+  return found ? found.text : "月を選択"
+})
+
 
 </script>
 
 <template>
-  <v-container>
-    <v-select
-      v-model="month"
-      :items="months"
-      label="月を選択"
-      item-title="text"
-      item-value="value"
-      :length="12"
-      @update:model-value="setMonth(month)"
-      class="month-picker"
-    ></v-select>
-  </v-container>
+  <div v-if="isMobile">
+    <v-btn
+      @click="showBottomSheet = true"
+      variant="outlined"
+      block
+      class="month-button"
+    >{{ selectedMonthText }}</v-btn>
+
+    <v-bottom-sheet v-model="showBottomSheet">
+      <v-card>
+        <v-card-title class="text-center">月を選択</v-card-title>
+        <v-card-text>
+          <v-list-item
+          v-for="m in months"
+          :key="m.value"
+          @click="selectMonth(m.value)"
+          :active="month === m.value"
+          >
+            <v-list-item-title>{{ m.text }}</v-list-item-title>
+          </v-list-item>
+        </v-card-text>
+      </v-card>
+    </v-bottom-sheet>
+  </div>
+  <v-select
+    v-else
+    v-model="month"
+    :items="months"
+    label="月を選択"
+    item-title="text"
+    item-value="value"
+    :length="12"
+    @update:model-value="setMonth(month)"
+    class="month-picker"
+  ></v-select>
 </template>
 
 <style scoped>
