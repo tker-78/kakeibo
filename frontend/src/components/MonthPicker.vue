@@ -4,7 +4,7 @@ import { ref, onMounted, computed } from 'vue'
 
 const dateStore = useDateStore()
 
-const month = ref(new Date().getMonth() + 1)
+const month = ref(dateStore.getMonth())
 
 const months = computed(() => [
     {value: 1, text: '1月'},
