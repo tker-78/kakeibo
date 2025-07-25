@@ -89,7 +89,7 @@ onMounted( ()  =>  {
         </div>
       </v-app-bar>
     <!-- main content -->
-    <v-main>
+    <v-main app>
       <router-view/>
     </v-main>
   </v-app>

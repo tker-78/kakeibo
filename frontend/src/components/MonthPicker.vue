@@ -4,7 +4,7 @@ import { ref, onMounted, computed } from 'vue'
 
 const dateStore = useDateStore()
 
-const month = ref(dateStore.getMonth())
+const month = ref(new Date().getMonth() + 1)
 
 const months = computed(() => [
     {value: 1, text: '1月'},
@@ -35,16 +35,18 @@ onMounted(() => {
 </script>
 
 <template>
-  <v-select
-    v-model="month"
-    :items="months"
-    label="月を選択"
-    item-title="text"
-    item-value="value"
-    :length="12"
-    @update:model-value="setMonth(month)"
-    class="month-picker"
-  ></v-select>
+  <v-container>
+    <v-select
+      v-model="month"
+      :items="months"
+      label="月を選択"
+      item-title="text"
+      item-value="value"
+      :length="12"
+      @update:model-value="setMonth(month)"
+      class="month-picker"
+    ></v-select>
+  </v-container>
 </template>
 
 <style scoped>
