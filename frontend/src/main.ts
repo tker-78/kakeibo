@@ -29,17 +29,6 @@ const vuetify = createVuetify( {
         xl: 1920,
       },
     },
-    // デフォルトの設定でモバイルタッチをサポート
-    defaults: {
-      VSelect: {
-        variant: 'outlined',
-        density: 'compact',
-        menuProps: {
-          attach: true,
-          closeOnContentClick: true
-        }
-      }
-    }
   }
 )
 

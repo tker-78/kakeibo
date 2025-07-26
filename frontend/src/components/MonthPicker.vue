@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useDateStore } from '@/stores/date'
-import { ref, onMounted, computed, watch } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 
 const dateStore = useDateStore()
 
@@ -38,8 +38,9 @@ const isMobile = computed(() => {
 
 const showBottomSheet = ref(false)
 
-const selectMonth = (month: number) => {
-  setMonth(month)
+const selectMonth = (selectedMonth: number) => {
+  month.value = selectedMonth
+  setMonth(selectedMonth)
   showBottomSheet.value = false
 }
 
