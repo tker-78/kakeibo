@@ -26,7 +26,6 @@ const budgetList = ref<number[]> ([])
 const getBudgetItems = async (date: string) => {
   // 当月の予算データを取得する
   budgetData.value = []
-  budgetList.value = []
 
   const { start, end} = getMonthRange(date)
 

@@ -19,6 +19,7 @@ const dateStore = useDateStore()
 const headerStore = useHeaderStore()
 const authStore = useAuthStore()
 const typeStore = useTypeStore()
+
 const expenseData = ref<Item[]>([])
 const expenseByCategory = ref<number[]>([])
 
@@ -30,7 +31,7 @@ const getExpenseDataForThisMonth = async (date: string) => {
 }
 
 const getExpenseByCategory = async (date: string) => {
-  expenseByCategory.value = []
+  // expenseByCategory.value = []
   if (!authStore.user?.id ) { return }
   expenseByCategory.value = await expenseHelpers.getExpenseByCategory(authStore.user?.id, date)
   console.log("expenseByCategory:", expenseByCategory.value)
@@ -41,12 +42,12 @@ const fetchData = async () => {
   await getExpenseByCategory(dateStore.date)
 }
 
-onMounted(() => {
+onMounted(async () => {
   headerStore.setTitle('支出分析')
   typeStore.setType('expenses')
-  getExpenseDataForThisMonth(dateStore.date)
-  getExpenseByCategory(dateStore.date)
-  console.log('authStore.user:', authStore.user?.id)
+  await getExpenseDataForThisMonth(dateStore.date)
+  await getExpenseByCategory(dateStore.date)
+  // console.log('authStore.user:', authStore.user?.id)
 })
 
 watch(

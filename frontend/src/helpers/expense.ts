@@ -2,25 +2,25 @@ import { supabase } from '@/lib/supabaseClient.ts'
 import { getMonthRange } from '@/helpers/date.ts'
 
 export const expenseHelpers = {
-  getExpenseDataForThisMonth: async (user_id: string, date: string ) => {
-    const list = []
+  fetchExpenseData: async (user_id: string, date: string) => {
     const { start, end } = getMonthRange(date)
-
     const { data, error } = await supabase
       .from('expenses')
       .select('*')
       .eq('user_id', user_id)
       .gte('expense_month', start)
       .lte('expense_month', end)
-
+    return { data, error}
+  },
+  getExpenseDataForThisMonth: async (user_id: string, date: string ) => {
+    const list = []
+    const { data, error } = await expenseHelpers.fetchExpenseData(user_id, date)
     if (error) {
       console.log('error:', error)
       return []
     }
 
-    if ( data === null ) {
-      return []
-    }
+    if ( data === null ) { return [] }
 
     for (const item of data) {
       if (item.expense_value != null) {
@@ -32,22 +32,14 @@ export const expenseHelpers = {
   getExpenseByCategory: async (user_id: string, date: string) => {
 
     let sum_food = 0
-    let sum_transprot = 0
+    let sum_transport = 0
     let sum_house = 0
     let sum_medical = 0
     let sum_education = 0
     let sum_investment = 0
     let sum_other = 0
 
-
-    const { start, end } = getMonthRange(date)
-
-    const { data, error } = await supabase
-      .from('expenses')
-      .select('*')
-      .eq('user_id', user_id)
-      .gte('expense_month', start)
-      .lte('expense_month', end)
+    const { data, error } = await expenseHelpers.fetchExpenseData(user_id, date)
 
     if (error) {
       console.log('error:', error)
@@ -60,7 +52,7 @@ export const expenseHelpers = {
       if (item.category === '食費') {
         sum_food += item.expense_value
       } else if (item.category === '交通費') {
-        sum_transprot += item.expense_value
+        sum_transport += item.expense_value
       } else if (item.category === '住宅費') {
         sum_house += item.expense_value
       } else if (item.category === '医療費') {
@@ -76,14 +68,12 @@ export const expenseHelpers = {
 
     return [
       sum_food,
-      sum_transprot,
+      sum_transport,
       sum_house,
       sum_medical,
       sum_education,
       sum_investment,
       sum_other,
     ]
-
-
   },
 }
