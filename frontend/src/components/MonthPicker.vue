@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useDateStore } from '@/stores/date'
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
 
 const dateStore = useDateStore()
 
@@ -48,6 +48,10 @@ const selectedMonthText = computed(() => {
   const found = months.value.find(m => m.value === dateStore.month)
   return found ? found.text : "月を選択"
 })
+
+watch(() => dateStore.month, (newMonth) => {
+  month.value = newMonth
+}, { immediate: true })
 
 
 </script>
