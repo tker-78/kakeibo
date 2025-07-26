@@ -2,8 +2,7 @@ import { supabase } from '@/lib/supabaseClient.ts'
 import { getMonthRange } from '@/helpers/date'
 
 export const incomeHelpers = {
-  getIncomeListForThisMonth: async (user_id: string, date: string ) => {
-    const list = []
+  fetchIncomeData: async (user_id: string, date: string) => {
     const { start, end } = getMonthRange(date)
     const { data, error } = await supabase
       .from('incomes')
@@ -11,6 +10,11 @@ export const incomeHelpers = {
       .eq('user_id', user_id)
       .gte('income_month', start)
       .lte('income_month', end)
+    return { data, error}
+  },
+  getIncomeListForThisMonth: async (user_id: string, date: string ) => {
+    const list = []
+    const { data, error } = await incomeHelpers.fetchIncomeData(user_id, date)
 
     if (error) {
       console.log('error:', error)
@@ -28,25 +32,20 @@ export const incomeHelpers = {
 
   },
   getIncomeByCategory: async (user_id: string, date: string) => {
-    const { start, end } = getMonthRange(date)
 
     let sum_salary = 0
     let sum_realstate = 0
     let sum_support = 0
     let sum_other = 0
 
-    const { data, error }  = await supabase
-      .from('incomes')
-      .select('*')
-      .eq('user_id', user_id)
-      .gte('income_month', start)
-      .lte('income_month', end)
-
+    const { data, error } = await incomeHelpers.fetchIncomeData(user_id, date)
 
     if (error) {
       console.log('error:', error)
       return []
     }
+
+    if ( data === null ) { return [] }
 
     for (const item of data) {
       if (item.category === '給与収入') {
