@@ -14,6 +14,7 @@ import PieChart from '@/components/PieChart.vue'
 
 import { lists } from '@/constants/lists'
 import { getMonthRange } from '@/helpers/date.ts'
+import { budgetHelpers } from '@/helpers/budget.ts'
 
 const authStore = useAuthStore();
 const headerStore = useHeaderStore();
@@ -26,72 +27,18 @@ const budgetList = ref<number[]> ([])
 const getBudgetItems = async (date: string) => {
   // 当月の予算データを取得する
   budgetData.value = []
+  if (!authStore.user?.id )  { return }
 
-  const { start, end} = getMonthRange(date)
+  budgetData.value = await budgetHelpers.getBudgetItems(authStore.user.id, date)
 
-  const { data, error } = await supabase
-    .from('budgets')
-    .select('*')
-    .eq('user_id', authStore.user?.id)
-    .gte('budget_month', start)
-    .lte('budget_month', end)
-
-  if (error) {
-    console.log('error:', error)
-    console.log('data:', data)
-    console.log('予算の取得に失敗しました。もう一度試してください。')
-  } else {
-    console.log('data:', data)
-    for (const item of data)  {
-      if (item.budget_value != null) {
-        budgetData.value.push(item)
-      }
-    }
-  }
   console.log('budgetData:', budgetData.value)
 }
 
 const getBudgetByCategory = async (date: string) => {
-  const { start, end} = getMonthRange(date)
+  if (!authStore.user?.id )  { return }
+  budgetList.value = await budgetHelpers.getBudgetByCategory(authStore.user?.id, date)
 
-  let food = 0
-  let transport = 0
-  let house = 0
-  let medical = 0
-  let education = 0
-  let investment = 0
-  let other = 0
-
-  const { data, error } = await supabase
-    .from('budgets')
-    .select('*')
-    .eq('user_id', authStore.user?.id)
-    .gte('budget_month', start)
-    .lte('budget_month', end)
-
-  if (error) {
-    console.log('error:', error)
-  } else {
-    for (const item of data) {
-      if (item.category === '食費') {
-        food += item.budget_value
-      } else if (item.category === '交通費') {
-        transport += item.budget_value
-      } else if (item.category === '住宅費') {
-        house += item.budget_value
-      } else if (item.category === '医療費') {
-        medical += item.budget_value
-      } else if (item.category === '教育費') {
-        education += item.budget_value
-      } else if (item.category === '投資') {
-        investment += item.budget_value
-      } else if (item.category === 'その他費用') {
-        other += item.budget_value
-      }
-    }
-    budgetList.value = [food, transport, house, medical, education, investment, other]
-    console.log('budgetList:', budgetList.value)
-  }
+  console.log('budgetList:', budgetList.value)
 }
 
 const getBudgetTotal = async (date: string) => {
