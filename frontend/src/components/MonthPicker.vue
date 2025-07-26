@@ -22,8 +22,8 @@ const months = computed(() => [
 ])
 
 
-const setMonth = (month: number) => {
-  dateStore.setMonth(month)
+const setMonth = async (month: number) => {
+  await dateStore.setMonth(month)
   console.log(dateStore.date)
 }
 
@@ -38,9 +38,9 @@ const isMobile = computed(() => {
 
 const showBottomSheet = ref(false)
 
-const selectMonth = (selectedMonth: number) => {
+const selectMonth = async (selectedMonth: number) => {
   month.value = selectedMonth
-  setMonth(selectedMonth)
+  await setMonth(selectedMonth)
   showBottomSheet.value = false
 }
 
