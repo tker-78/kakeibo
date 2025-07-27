@@ -61,8 +61,15 @@ export const budgetHelpers = {
         other += item.budget_value
       }
     }
-
     return [food, transport, house, medical, education, investment, other]
+  },
+  getBudgetTotal: async (user_id: string, date: string) => {
+    const list = await budgetHelpers.getBudgetItems(user_id, date)
+    let total = 0
+    for (const item of list) {
+      total += item.budget_value
+    }
+    return total
 
   }
 }

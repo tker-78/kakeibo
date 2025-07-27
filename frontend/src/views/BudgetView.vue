@@ -3,7 +3,6 @@ import { useAuthStore } from '@/stores/auth';
 import { useHeaderStore } from '@/stores/header';
 import { useDateStore } from '@/stores/date';
 import { useTypeStore } from '@/stores/type';
-import { supabase } from '@/lib/supabaseClient';
 import { onMounted, ref, watch } from 'vue';
 import type { Item } from '@/types/Item.ts'
 import MonthPicker from '@/components/MonthPicker.vue'
@@ -13,7 +12,6 @@ import PieChart from '@/components/PieChart.vue'
 
 
 import { lists } from '@/constants/lists'
-import { getMonthRange } from '@/helpers/date.ts'
 import { budgetHelpers } from '@/helpers/budget.ts'
 
 const authStore = useAuthStore();
@@ -23,6 +21,7 @@ const typeStore = useTypeStore();
 
 const budgetData = ref<Item[]>([])
 const budgetList = ref<number[]> ([])
+const budgetTotal = ref<number>(0)
 
 const getBudgetItems = async (date: string) => {
   // 当月の予算データを取得する
@@ -43,7 +42,8 @@ const getBudgetByCategory = async (date: string) => {
 
 const getBudgetTotal = async (date: string) => {
   //　予算金額の合計値を計算する
-  // todo
+  if (!authStore.user?.id )  { return }
+  budgetTotal.value = await budgetHelpers.getBudgetTotal(authStore.user?.id, date)
 }
 
 
@@ -85,6 +85,9 @@ onMounted(() => {
           :items="budgetList"
         />
       </v-col>
+    </v-row>
+    <v-row class="d-flex justify-center">
+      今月の予算総額: {{ budgetTotal }}円
     </v-row>
     <v-row class="d-flex justify-center">
       <v-col col="12" sm="10" md="12" lg="10" xl="10">
